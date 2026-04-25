@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Barlow", sans-serif;
+  --font-serif: "Instrument Serif", serif;
+  
+  --color-btn-bg: #f8f8f8;
+  --color-btn-text: #171717;
+  --color-bg-dark: #000000;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-bg-dark);
+    color: #FFFFFF;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom minimal scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 0px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
