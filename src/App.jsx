@@ -32,11 +32,13 @@ import ErrorBoundary from './components/ErrorBoundary';
 // Admin panel (nested routes handled inside AdminPanel)
 import AdminPanel from './pages/admin/AdminPanel';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 function App() {
   return (
     <>
       <Analytics />
+      <SpeedInsights />
       <CinematicPreloader />
       <ErrorBoundary>
         <Layout>
