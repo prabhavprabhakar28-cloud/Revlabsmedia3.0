@@ -44,20 +44,20 @@ export default function Home() {
 
             <h1 className="flex flex-col items-center gap-2 mb-6 pointer-events-auto">
               <span className="font-sans font-light text-[64px] leading-tight text-white m-0 p-0">
-                Agency that makes your
+                Results aren't optional.
               </span>
               <span className="font-serif italic text-[64px] leading-tight text-white m-0 p-0">
-                videos & reels viral
+                They're expected.
               </span>
             </h1>
             
             <p className="max-w-xl mx-auto text-white/75 font-sans mb-10 text-[19px] leading-relaxed">
-              We help brands and creators scale through high-impact video editing, content strategy, and performance-driven visuals.
+              Strategy, content, and execution engineered to win — not to impress.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
               <Button to="/services" className="px-10 py-4 text-lg w-full sm:w-auto text-center">
-                Get Started
+                Get Results
               </Button>
               <Button to="/work" variant="secondary" className="px-10 py-4 text-lg w-full sm:w-auto text-center">
                 View Work
