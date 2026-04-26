@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://revlabsmediahouse.com/sitemap.xml
+Sitemap: https://revlabsmedia.online/sitemap.xml

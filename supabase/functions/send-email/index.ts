@@ -19,7 +19,7 @@ const templates = {
         <h1 style="font-size: 28px; margin-bottom: 8px;">Welcome to RevLabs, ${name}!</h1>
         <p style="color: #888; line-height: 1.6;">You've just joined a creative powerhouse. We build visual engines that scale — video, photo, web, and design.</p>
         <div style="margin: 32px 0;">
-          <a href="https://revlabsmediahouse.com/services" style="background: #fff; color: #000; padding: 14px 28px; border-radius: 8px; font-weight: bold; text-decoration: none;">
+          <a href="https://revlabsmedia.online/services" style="background: #fff; color: #000; padding: 14px 28px; border-radius: 8px; font-weight: bold; text-decoration: none;">
             Explore Services →
           </a>
         </div>
@@ -39,7 +39,7 @@ const templates = {
         </div>
         <p style="color: #888; line-height: 1.6;">Our team will review it and update the status shortly. You can track progress in your dashboard.</p>
         <div style="margin: 24px 0;">
-          <a href="https://revlabsmediahouse.com/dashboard" style="background: #fff; color: #000; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none;">
+          <a href="https://revlabsmedia.online/dashboard" style="background: #fff; color: #000; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none;">
             View Dashboard →
           </a>
         </div>
@@ -79,7 +79,7 @@ const templates = {
           <p style="color: #aaa; text-transform: capitalize; font-size: 14px;">Status: <strong style="color: #fff;">${status}</strong></p>
         </div>
         <div style="margin: 24px 0;">
-          <a href="https://revlabsmediahouse.com/dashboard" style="background: #fff; color: #000; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none;">
+          <a href="https://revlabsmedia.online/dashboard" style="background: #fff; color: #000; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none;">
             View in Dashboard →
           </a>
         </div>
@@ -134,7 +134,7 @@ serve(async (req: Request) => {
         "Authorization": `Bearer ${Deno.env.get("RESEND_API_KEY")}`,
       },
       body: JSON.stringify({
-        from:    "RevLabs <noreply@revlabsmediahouse.com>",
+        from:    "RevLabs <noreply@revlabsmedia.online>",
         to:      [to],
         subject: emailContent.subject,
         html:    emailContent.html,

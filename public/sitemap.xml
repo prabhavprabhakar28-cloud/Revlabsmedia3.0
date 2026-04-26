@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://revlabsmediahouse.com/</loc>
+    <loc>https://revlabsmedia.online/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://revlabsmediahouse.com/work</loc>
+    <loc>https://revlabsmedia.online/work</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://revlabsmediahouse.com/services</loc>
+    <loc>https://revlabsmedia.online/services</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://revlabsmediahouse.com/about</loc>
+    <loc>https://revlabsmedia.online/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://revlabsmediahouse.com/contact</loc>
+    <loc>https://revlabsmedia.online/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://revlabsmediahouse.com/login</loc>
+    <loc>https://revlabsmedia.online/login</loc>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://revlabsmediahouse.com/signup</loc>
+    <loc>https://revlabsmedia.online/signup</loc>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://revlabsmediahouse.com/privacy</loc>
+    <loc>https://revlabsmedia.online/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://revlabsmediahouse.com/terms</loc>
+    <loc>https://revlabsmedia.online/terms</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

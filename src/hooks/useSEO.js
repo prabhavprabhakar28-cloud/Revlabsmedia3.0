@@ -46,7 +46,7 @@ export function useSEO({ title, description, canonical }) {
         link.rel = 'canonical';
         document.head.appendChild(link);
       }
-      link.href = `https://revlabsmediahouse.com${canonical}`;
+      link.href = `https://revlabsmedia.online${canonical}`;
     }
 
     return () => {
