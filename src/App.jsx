@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import Layout from './components/Layout';
 import CinematicPreloader from './components/CinematicPreloader';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -36,6 +37,7 @@ function App() {
   return (
     <>
       <CinematicPreloader />
+      <Analytics />
       <ErrorBoundary>
         <Layout>
         <Routes>
