@@ -131,6 +131,7 @@ export default function Contact() {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="John Doe"
+                      maxLength={100}
                       className="w-full bg-white/[0.03] border border-white/10 rounded-[12px] px-5 py-4 text-white font-sans focus:outline-none focus:border-white/30 transition-all placeholder:text-white/10"
                     />
                   </div>
@@ -143,6 +144,7 @@ export default function Contact() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="hello@example.com"
+                      maxLength={254}
                       className="w-full bg-white/[0.03] border border-white/10 rounded-[12px] px-5 py-4 text-white font-sans focus:outline-none focus:border-white/30 transition-all placeholder:text-white/10"
                     />
                   </div>
@@ -157,6 +159,7 @@ export default function Contact() {
                     onChange={handleChange}
                     rows={6}
                     placeholder="Tell us about your project..."
+                    maxLength={2000}
                     className="w-full bg-white/[0.03] border border-white/10 rounded-[12px] px-5 py-4 text-white font-sans focus:outline-none focus:border-white/30 transition-all resize-none placeholder:text-white/10"
                   />
                 </div>

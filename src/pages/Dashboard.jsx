@@ -77,6 +77,7 @@ function NewReportModal({ onClose, onCreate }) {
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              maxLength={200}
               className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-white font-sans focus:outline-none focus:border-white/30 transition-colors"
               placeholder="e.g. YouTube Channel Re-edit"
             />
@@ -87,6 +88,7 @@ function NewReportModal({ onClose, onCreate }) {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={4}
+              maxLength={2000}
               className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-white font-sans focus:outline-none focus:border-white/30 transition-colors resize-none"
               placeholder="Describe your project requirements, style references, deadlines..."
             />
@@ -102,6 +104,19 @@ function NewReportModal({ onClose, onCreate }) {
       </motion.div>
     </div>
   );
+}
+
+// ── Invoice HTML Sanitizer ────────────────────────────────────
+// Security: escape HTML special chars before injecting user data
+// into the invoice blob to prevent XSS in downloaded files.
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
 // ── Payment Invoice Generator ──────────────────────────────────
@@ -130,18 +145,18 @@ function downloadInvoice(payment, userProfile) {
   <div class="logo">Rev<span>Labs</span></div>
   <h2>Invoice</h2>
   <div class="amount">₹${Number(payment.amount).toLocaleString('en-IN')}</div>
-  <p style="color:#666;font-size:12px;margin-top:8px;text-transform:uppercase;letter-spacing:2px;">${payment.currency}</p>
+  <p style="color:#666;font-size:12px;margin-top:8px;text-transform:uppercase;letter-spacing:2px;">${escapeHtml(payment.currency)}</p>
 
   <hr class="divider"/>
 
-  <div class="row"><span class="label">Invoice ID</span><span>#${payment.id.slice(0, 8).toUpperCase()}</span></div>
+  <div class="row"><span class="label">Invoice ID</span><span>#${escapeHtml(payment.id.slice(0, 8).toUpperCase())}</span></div>
   <div class="row"><span class="label">Date</span><span>${new Date(payment.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</span></div>
-  <div class="row"><span class="label">Client</span><span>${userProfile?.full_name || 'Client'}</span></div>
-  <div class="row"><span class="label">Email</span><span>${userProfile?.email || '—'}</span></div>
-  <div class="row"><span class="label">Service</span><span>${payment.service_type || 'RevLabs Service'}</span></div>
-  <div class="row"><span class="label">Provider</span><span style="text-transform:capitalize">${payment.payment_provider}</span></div>
-  <div class="row"><span class="label">Transaction ID</span><span>${payment.provider_payment_id || '—'}</span></div>
-  <div class="row" style="margin-top:20px"><span class="label">Status</span><span class="status">${payment.status}</span></div>
+  <div class="row"><span class="label">Client</span><span>${escapeHtml(userProfile?.full_name || 'Client')}</span></div>
+  <div class="row"><span class="label">Email</span><span>${escapeHtml(userProfile?.email || '—')}</span></div>
+  <div class="row"><span class="label">Service</span><span>${escapeHtml(payment.service_type || 'RevLabs Service')}</span></div>
+  <div class="row"><span class="label">Provider</span><span style="text-transform:capitalize">${escapeHtml(payment.payment_provider)}</span></div>
+  <div class="row"><span class="label">Transaction ID</span><span>${escapeHtml(payment.provider_payment_id || '—')}</span></div>
+  <div class="row" style="margin-top:20px"><span class="label">Status</span><span class="status">${escapeHtml(payment.status)}</span></div>
 
   <hr class="divider"/>
 

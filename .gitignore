@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Security: explicitly block all .env files from being committed.
+# Only .env.example (a safe template with no real values) is allowed.
+.env
+.env.*
+!.env.example
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

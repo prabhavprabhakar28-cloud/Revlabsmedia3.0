@@ -24,7 +24,12 @@ export default function Login() {
   const navigate  = useNavigate();
   const location  = useLocation();
 
-  const redirectPath = location.state?.from || '/dashboard';
+  // Security: validate the redirect path is an internal route only.
+  // Prevents open-redirect attacks via crafted login links (e.g. state.from = '//evil.com').
+  const rawRedirect = location.state?.from;
+  const redirectPath = (rawRedirect && typeof rawRedirect === 'string' && rawRedirect.startsWith('/') && !rawRedirect.startsWith('//'))
+    ? rawRedirect
+    : '/dashboard';
   const infoMessage  = location.state?.message;
 
   const handleSubmit = async (e) => {
