@@ -18,12 +18,21 @@ export const AuthProvider = ({ children }) => {
   const fetchProfile = useCallback(async (userId) => {
     if (!userId) { setProfile(null); return; }
     
+    console.log('[AuthContext] Fetching profile for:', userId);
+    
+    // Add a timeout to prevent hanging indefinitely
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Profile fetch timeout')), 5000)
+    );
+
     try {
-      const { data, error } = await supabase
+      const fetchPromise = supabase
         .from('profiles')
         .select('*')
         .eq('id', userId)
         .maybeSingle();
+
+      const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
 
       if (error) {
         console.error('[AuthContext] Error fetching profile:', error.message, error);
@@ -38,7 +47,8 @@ export const AuthProvider = ({ children }) => {
         }
       }
     } catch (err) {
-      console.error('[AuthContext] Unexpected fetch error:', err);
+      console.error('[AuthContext] Unexpected fetch error or timeout:', err);
+      // We don't re-throw here to allow the app to initialize even if profile fails
     }
   }, []);
 
@@ -151,7 +161,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };

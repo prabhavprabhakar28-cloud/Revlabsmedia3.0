@@ -8,6 +8,7 @@ export default function CinematicPreloader() {
   const [phase, setPhase] = useState('hidden'); // hidden -> fade-in -> hold -> zoom -> done
 
   useEffect(() => {
+    console.log('[CinematicPreloader] Mounted, phase:', phase, 'hasPlayedIntro:', hasPlayedIntro);
     if (hasPlayedIntro) return;
 
     // Sequence:
