@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import Layout from './components/Layout';
 import CinematicPreloader from './components/CinematicPreloader';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -38,6 +39,7 @@ function App() {
       <CinematicPreloader />
       <ErrorBoundary>
         <Layout>
+        <Analytics />
         <Routes>
           {/* ── Public ────────────────────────────────────────── */}
           <Route path="/"        element={<Home />} />
