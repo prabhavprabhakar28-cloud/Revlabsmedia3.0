@@ -323,7 +323,7 @@ export default function Dashboard() {
             <button
               key={id}
               onClick={() => setTab(id)}
-              className={`flex items-center gap-2 px-5 py-3 font-sans text-sm transition-all border-b-2 -mb-px ${
+              className={`flex items-center gap-2 px-3 sm:px-5 py-3 font-sans text-xs sm:text-sm transition-all border-b-2 -mb-px ${
                 tab === id
                   ? 'border-white text-white'
                   : 'border-transparent text-white/30 hover:text-white/70'

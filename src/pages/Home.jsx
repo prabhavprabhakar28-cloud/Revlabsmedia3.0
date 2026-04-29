@@ -24,7 +24,7 @@ export default function Home() {
         />
 
         {/* Main Content Container - 250px bottom padding is required, full height relative to hero */}
-        <div className="relative z-10 w-full h-full flex flex-col items-center justify-between pointer-events-none pb-[250px] pt-32 px-6">
+        <div className="relative z-10 w-full h-full flex flex-col items-center justify-between pointer-events-none pb-[120px] sm:pb-[200px] lg:pb-[250px] pt-24 sm:pt-32 px-6">
           
           {/* Empty spacer to maintain flex justify-between alignment */}
           <div aria-hidden="true" className="h-8 mt-8"></div>
@@ -43,15 +43,15 @@ export default function Home() {
             <div className="absolute bottom-0 right-0 w-[7px] h-[7px] bg-white" />
 
             <h1 className="flex flex-col items-center gap-2 mb-6 pointer-events-auto">
-              <span className="font-sans font-light text-[64px] leading-tight text-white m-0 p-0">
+              <span className="font-sans font-light text-[34px] sm:text-[48px] lg:text-[64px] leading-tight text-white m-0 p-0">
                 Results aren't optional.
               </span>
-              <span className="font-serif italic text-[64px] leading-tight text-white m-0 p-0">
+              <span className="font-serif italic text-[34px] sm:text-[48px] lg:text-[64px] leading-tight text-white m-0 p-0">
                 They're expected.
               </span>
             </h1>
             
-            <p className="max-w-xl mx-auto text-white/75 font-sans mb-10 text-[19px] leading-relaxed">
+            <p className="max-w-xl mx-auto text-white/75 font-sans mb-10 text-[15px] sm:text-[19px] leading-relaxed">
               Strategy, content, and execution engineered to win — not to impress.
             </p>
             
@@ -88,7 +88,7 @@ export default function Home() {
             { title: 'Motion & VFX', desc: 'Branded motion graphics, animations and clean compositing layered into your edit.' },
             { title: 'Color Grading', desc: 'Standard correction or full cinematic looks — applied once per project for visual consistency.' }
           ].map((item, idx) => (
-            <div key={idx} className="border border-white/10 rounded-[12px] p-12 bg-[#050505] hover:bg-[#0a0a0a] transition-colors duration-300">
+            <div key={idx} className="border border-white/10 rounded-[12px] p-8 bg-[#050505] hover:bg-[#0a0a0a] transition-colors duration-300">
               <h3 className="text-2xl font-serif italic mb-4">{item.title}</h3>
               <p className="text-white/60 font-sans text-[15px] leading-relaxed max-w-md">{item.desc}</p>
             </div>
@@ -121,7 +121,7 @@ export default function Home() {
 
       {/* 4. WHY REVLABS SECTION */}
       <section className="py-32 px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20">
           <div>
             <p className="text-white/50 text-xs font-sans tracking-widest uppercase mb-4">WHY REVLABS</p>
             <h2 className="text-5xl md:text-6xl font-sans font-light mb-8 pt-2">Premium output. <br/><span className="font-serif italic lowercase drop-shadow-sm">honest pricing.</span></h2>
@@ -145,8 +145,8 @@ export default function Home() {
       </section>
 
       {/* 5. CTA SECTION */}
-      <section className="py-40 px-6">
-        <div className="max-w-5xl mx-auto border border-white/10 rounded-[20px] bg-gradient-to-b from-[#0a0a0a] to-[#000000] p-16 md:p-24 text-center shadow-2xl relative overflow-hidden">
+      <section className="py-20 md:py-40 px-6">
+        <div className="max-w-5xl mx-auto border border-white/10 rounded-[20px] bg-gradient-to-b from-[#0a0a0a] to-[#000000] p-8 sm:p-16 md:p-24 text-center shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
           <h2 className="text-5xl md:text-6xl font-sans font-light mb-6">Ready to ship <span className="font-serif italic pr-1">better video?</span></h2>
           <p className="text-white/60 font-sans text-lg mb-12 max-w-xl mx-auto leading-relaxed">

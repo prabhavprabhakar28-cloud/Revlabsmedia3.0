@@ -52,8 +52,8 @@ export default function Contact() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-32 min-h-screen">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+    <div className="max-w-7xl mx-auto px-6 py-20 md:py-32 min-h-screen">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
         
         {/* Left Column: Text Content */}
         <motion.div
@@ -62,7 +62,7 @@ export default function Contact() {
           transition={{ duration: 0.8 }}
         >
           <p className="text-white/40 font-sans text-sm uppercase tracking-widest mb-4">Get in Touch</p>
-          <h1 className="text-6xl md:text-8xl font-sans font-light mb-8 leading-none">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-sans font-light mb-8 leading-none">
             Let's <span className="font-serif italic lowercase normal-case">Create</span> Something <span className="font-serif italic lowercase normal-case">Epic</span>.
           </h1>
           <p className="text-xl text-white/60 font-sans max-w-md leading-relaxed mb-12">

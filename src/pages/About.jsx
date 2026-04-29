@@ -20,7 +20,7 @@ export default function About() {
           transition={{ duration: 0.8 }}
           className="mb-24"
         >
-          <h1 className="text-6xl font-sans font-light mb-8 max-w-2xl leading-tight">
+          <h1 className="text-4xl sm:text-6xl font-sans font-light mb-8 max-w-2xl leading-tight">
             We are <span className="font-serif italic">RevLabs</span>
           </h1>
           <p className="text-xl font-sans text-white/80 leading-relaxed">

@@ -164,9 +164,9 @@ export default function Services() {
 
   return (
     <>
-      <div className="max-w-7xl mx-auto px-6 py-32 min-h-screen">
+      <div className="max-w-7xl mx-auto px-6 py-20 md:py-32 min-h-screen">
         <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-7xl font-sans font-light mb-6">Our <span className="font-serif italic drop-shadow-sm">Services</span></h1>
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-sans font-light mb-6">Our <span className="font-serif italic drop-shadow-sm">Services</span></h1>
           <p className="text-white/70 font-sans max-w-2xl mx-auto text-lg">Comprehensive, growth-driven visual systems engineered for elite creators and global brands.</p>
         </div>
 
@@ -302,7 +302,7 @@ export default function Services() {
 
                 {/* Right Col: Live Invoice */}
                 <div className="lg:col-span-5 relative">
-                  <div className="sticky top-32 bg-[#0a0a0a] border border-white/10 p-10 rounded-[12px] shadow-2xl">
+                  <div className="lg:sticky top-32 bg-[#0a0a0a] border border-white/10 p-8 lg:p-10 rounded-[12px] shadow-2xl">
                     <h2 className="text-3xl font-sans font-light mb-8 pb-4 border-b border-white/10">Project Engine</h2>
                     <div className="space-y-4 mb-10 min-h-[150px]">
                       <AnimatePresence>

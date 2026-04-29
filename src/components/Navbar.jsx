@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../assets/logo.png';
 import { useAuth } from '../context/AuthContext';
+import { Menu, X } from 'lucide-react';
 
 export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout, isAdmin, profile } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,6 +19,21 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close menu on route change
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
 
   const links = [
     { name: 'Home', path: '/' },
@@ -32,98 +49,192 @@ export default function Navbar() {
   };
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-black/60 backdrop-blur-md py-4' : 'bg-transparent py-6'
-      }`}
-      style={{ WebkitTapHighlightColor: 'transparent' }}
-    >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <Link to="/" className="z-10 hover:opacity-80 transition-opacity flex-shrink-0">
-          <img src={logo} alt="RevLabs" className="h-8 w-auto object-contain" />
-        </Link>
-        <nav className="hidden md:flex items-center gap-2 justify-center flex-1">
-          {links.map((link) => {
-            const isActive = location.pathname === link.path;
-            return (
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled || menuOpen ? 'bg-black/80 backdrop-blur-md py-4' : 'bg-transparent py-6'
+        }`}
+        style={{ WebkitTapHighlightColor: 'transparent' }}
+      >
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+          <Link to="/" className="z-10 hover:opacity-80 transition-opacity flex-shrink-0">
+            <img src={logo} alt="RevLabs" className="h-8 w-auto object-contain" />
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-2 justify-center flex-1">
+            {links.map((link) => {
+              const isActive = location.pathname === link.path;
+              return (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className={`relative px-4 py-2 rounded-full font-sans text-sm transition-all duration-300 ${
+                    isActive
+                      ? 'text-white bg-white/10'
+                      : 'text-white/70 hover:text-white md:hover:bg-white/10'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
+            {user && (
               <Link
-                key={link.name}
-                to={link.path}
+                to="/dashboard"
                 className={`relative px-4 py-2 rounded-full font-sans text-sm transition-all duration-300 ${
-                  isActive 
-                    ? 'text-white bg-white/10' 
+                  location.pathname === '/dashboard'
+                    ? 'text-white bg-white/10'
                     : 'text-white/70 hover:text-white md:hover:bg-white/10'
                 }`}
               >
-                {link.name}
+                Dashboard
               </Link>
-            );
-          })}
-          {user && (
-            <Link
-              to="/dashboard"
-              className={`relative px-4 py-2 rounded-full font-sans text-sm transition-all duration-300 ${
-                location.pathname === '/dashboard' 
-                  ? 'text-white bg-white/10' 
-                  : 'text-white/70 hover:text-white md:hover:bg-white/10'
-              }`}
-            >
-              Dashboard
-            </Link>
-          )}
-          {isAdmin && (
-            <Link
-              to="/admin"
-              className={`relative px-4 py-2 rounded-full font-sans text-sm transition-all duration-300 ${
-                location.pathname.startsWith('/admin') 
-                  ? 'text-white bg-white/10' 
-                  : 'text-white/70 hover:text-white md:hover:bg-white/10'
-              }`}
-            >
-              Admin
-            </Link>
-          )}
-        </nav>
-        <div className="hidden md:flex items-center gap-4 flex-shrink-0">
-          {user ? (
-            <>
-              <div className="flex flex-col items-end">
-                <span className="text-white/80 font-sans text-sm">
-                  Hi, {(profile?.full_name || user?.email || 'User').split(' ')[0]}
-                </span>
-                {isAdmin && (
-                  <span className="text-[10px] font-sans font-bold text-white/40 tracking-widest uppercase">
-                    Admin
-                  </span>
-                )}
-              </div>
-              <button 
-                onClick={handleLogout}
-                className="px-4 py-2 rounded-full font-sans text-sm text-white border border-white/20 md:hover:bg-white/10 transition-colors duration-300"
+            )}
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className={`relative px-4 py-2 rounded-full font-sans text-sm transition-all duration-300 ${
+                  location.pathname.startsWith('/admin')
+                    ? 'text-white bg-white/10'
+                    : 'text-white/70 hover:text-white md:hover:bg-white/10'
+                }`}
               >
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="text-white/70 hover:text-white font-sans text-sm transition-colors duration-300">
-                Login
+                Admin
               </Link>
-              <Link to="/signup" className="px-5 py-2 bg-white text-black rounded-full font-sans text-sm font-medium hover:bg-white/90 transition-colors duration-300">
-                Sign Up
-              </Link>
-            </>
-          )}
+            )}
+          </nav>
+
+          {/* Desktop Auth */}
+          <div className="hidden md:flex items-center gap-4 flex-shrink-0">
+            {user ? (
+              <>
+                <div className="flex flex-col items-end">
+                  <span className="text-white/80 font-sans text-sm">
+                    Hi, {(profile?.full_name || user?.email || 'User').split(' ')[0]}
+                  </span>
+                  {isAdmin && (
+                    <span className="text-[10px] font-sans font-bold text-white/40 tracking-widest uppercase">
+                      Admin
+                    </span>
+                  )}
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 rounded-full font-sans text-sm text-white border border-white/20 md:hover:bg-white/10 transition-colors duration-300"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="text-white/70 hover:text-white font-sans text-sm transition-colors duration-300">
+                  Login
+                </Link>
+                <Link to="/signup" className="px-5 py-2 bg-white text-black rounded-full font-sans text-sm font-medium hover:bg-white/90 transition-colors duration-300">
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+
+          {/* Mobile Hamburger Button */}
+          <button
+            className="md:hidden flex items-center justify-center w-10 h-10 text-white z-10"
+            onClick={() => setMenuOpen(prev => !prev)}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          >
+            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
-        <div className="md:hidden flex items-center gap-4">
-          {!user ? (
-            <Link to="/login" className="text-white/70 hover:text-white text-sm">Login</Link>
-          ) : (
-            <button onClick={handleLogout} className="text-white/70 hover:text-white text-sm">Logout</button>
-          )}
-        </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Mobile Full-Screen Menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="fixed inset-0 z-40 bg-black flex flex-col pt-24 px-8 pb-12 overflow-y-auto"
+          >
+            {/* Nav Links */}
+            <nav className="flex flex-col gap-2 flex-1">
+              {links.map((link, idx) => {
+                const isActive = location.pathname === link.path;
+                return (
+                  <motion.div
+                    key={link.name}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.06 }}
+                  >
+                    <Link
+                      to={link.path}
+                      className={`block text-4xl font-sans font-light py-3 border-b border-white/5 transition-colors ${
+                        isActive ? 'text-white' : 'text-white/50 hover:text-white'
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
+                  </motion.div>
+                );
+              })}
+              {user && (
+                <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: links.length * 0.06 }}>
+                  <Link
+                    to="/dashboard"
+                    className={`block text-4xl font-sans font-light py-3 border-b border-white/5 transition-colors ${
+                      location.pathname === '/dashboard' ? 'text-white' : 'text-white/50 hover:text-white'
+                    }`}
+                  >
+                    Dashboard
+                  </Link>
+                </motion.div>
+              )}
+              {isAdmin && (
+                <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: (links.length + 1) * 0.06 }}>
+                  <Link
+                    to="/admin"
+                    className={`block text-4xl font-sans font-light py-3 border-b border-white/5 transition-colors ${
+                      location.pathname.startsWith('/admin') ? 'text-white' : 'text-white/50 hover:text-white'
+                    }`}
+                  >
+                    Admin
+                  </Link>
+                </motion.div>
+              )}
+            </nav>
+
+            {/* Mobile Auth Footer */}
+            <div className="pt-8 flex flex-col gap-3">
+              {user ? (
+                <>
+                  <p className="text-white/40 font-sans text-sm">
+                    Signed in as {profile?.full_name || user?.email}
+                  </p>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full py-3.5 rounded-full font-sans text-sm text-white border border-white/20 hover:bg-white/10 transition-colors"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="w-full py-3.5 rounded-full font-sans text-sm text-center text-white border border-white/20 hover:bg-white/10 transition-colors">
+                    Login
+                  </Link>
+                  <Link to="/signup" className="w-full py-3.5 rounded-full font-sans text-sm font-medium text-center bg-white text-black hover:bg-white/90 transition-colors">
+                    Sign Up
+                  </Link>
+                </>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
-

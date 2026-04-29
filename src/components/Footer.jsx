@@ -28,7 +28,7 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/10 text-white/50 text-xs font-sans">
+        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/10 text-white/50 text-xs font-sans gap-2 text-center md:text-left">
           <p>&copy; 2026 RevLabs Media House. All rights reserved.</p>
           <p>Crafted with intent. Based in India.</p>
         </div>

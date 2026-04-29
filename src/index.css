@@ -11,6 +11,9 @@
 }
 
 @layer base {
+  html {
+    overflow-x: hidden;
+  }
   body {
     background-color: var(--color-bg-dark);
     color: #FFFFFF;

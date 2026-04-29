@@ -145,8 +145,8 @@ function CaseStudyPanel({ project, onClose }) {
     >
       <div className="border border-white/10 rounded-sm bg-[#050505] mb-16">
         {/* Top bar */}
-        <div className="flex justify-between items-center px-8 py-5 border-b border-white/10">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-wrap justify-between items-center px-6 sm:px-8 py-5 border-b border-white/10 gap-3">
+            <div className="flex flex-wrap items-center gap-2">
             <span className="text-white/40 font-sans text-xs uppercase tracking-widest">Case Study</span>
             <span className="text-white/20">·</span>
             <span className="text-white/60 font-sans text-xs uppercase tracking-widest">{project.client}</span>
@@ -335,13 +335,13 @@ function ProcessTimeline() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="flex items-center justify-between mb-20"
+          className="flex items-center justify-between mb-20 flex-col sm:flex-row gap-6 sm:gap-0"
         >
           <div className="flex items-center gap-4">
             <div className="w-8 h-px bg-white/30" />
             <span className="font-sans text-xs text-white/40 uppercase tracking-[0.25em]">How We Work</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-sans font-light tracking-tight text-right">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-sans font-light tracking-tight text-right">
             The <span className="font-serif italic">Process</span>
           </h2>
         </motion.div>
@@ -443,7 +443,7 @@ export default function Work() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <h1 className="text-6xl md:text-8xl font-sans font-light mb-6 uppercase tracking-wider">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-sans font-light mb-6 uppercase tracking-wider">
             Our <span className="font-serif italic lowercase normal-case">Work</span>
           </h1>
           <p className="text-white/70 font-sans max-w-xl mx-auto text-lg leading-relaxed">
