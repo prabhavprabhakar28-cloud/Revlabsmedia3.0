@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import logo from '../assets/logo.png';
@@ -8,6 +8,15 @@ export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout, isAdmin, profile } = useAuth();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const links = [
     { name: 'Home', path: '/' },
@@ -23,8 +32,13 @@ export default function Navbar() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-transparent">
-      <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-black/60 backdrop-blur-md py-4' : 'bg-transparent py-6'
+      }`}
+      style={{ WebkitTapHighlightColor: 'transparent' }}
+    >
+      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         <Link to="/" className="z-10 hover:opacity-80 transition-opacity flex-shrink-0">
           <img src={logo} alt="RevLabs" className="h-8 w-auto object-contain" />
         </Link>
@@ -35,8 +49,10 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`relative px-4 py-2 rounded-full font-sans text-sm transition-colors duration-300 ${
-                  isActive ? 'text-white' : 'text-white/70 hover:text-white hover:bg-white/10'
+                className={`relative px-4 py-2 rounded-full font-sans text-sm transition-all duration-300 ${
+                  isActive 
+                    ? 'text-white bg-white/10' 
+                    : 'text-white/70 hover:text-white md:hover:bg-white/10'
                 }`}
               >
                 {link.name}
@@ -46,8 +62,10 @@ export default function Navbar() {
           {user && (
             <Link
               to="/dashboard"
-              className={`relative px-4 py-2 rounded-full font-sans text-sm transition-colors duration-300 ${
-                location.pathname === '/dashboard' ? 'text-white' : 'text-white/70 hover:text-white hover:bg-white/10'
+              className={`relative px-4 py-2 rounded-full font-sans text-sm transition-all duration-300 ${
+                location.pathname === '/dashboard' 
+                  ? 'text-white bg-white/10' 
+                  : 'text-white/70 hover:text-white md:hover:bg-white/10'
               }`}
             >
               Dashboard
@@ -56,8 +74,10 @@ export default function Navbar() {
           {isAdmin && (
             <Link
               to="/admin"
-              className={`relative px-4 py-2 rounded-full font-sans text-sm transition-colors duration-300 ${
-                location.pathname.startsWith('/admin') ? 'text-white' : 'text-white/70 hover:text-white hover:bg-white/10'
+              className={`relative px-4 py-2 rounded-full font-sans text-sm transition-all duration-300 ${
+                location.pathname.startsWith('/admin') 
+                  ? 'text-white bg-white/10' 
+                  : 'text-white/70 hover:text-white md:hover:bg-white/10'
               }`}
             >
               Admin
@@ -79,7 +99,7 @@ export default function Navbar() {
               </div>
               <button 
                 onClick={handleLogout}
-                className="px-4 py-2 rounded-full font-sans text-sm text-white border border-white/20 hover:bg-white/10 transition-colors duration-300"
+                className="px-4 py-2 rounded-full font-sans text-sm text-white border border-white/20 md:hover:bg-white/10 transition-colors duration-300"
               >
                 Logout
               </button>
@@ -106,3 +126,4 @@ export default function Navbar() {
     </header>
   );
 }
+

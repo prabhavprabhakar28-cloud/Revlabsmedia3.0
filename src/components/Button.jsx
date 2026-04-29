@@ -17,6 +17,7 @@ export default function Button({ children, to, onClick, className = '', external
           target="_blank" 
           rel="noopener noreferrer"
           className={`${combinedStyle} ${className}`}
+          style={{ WebkitTapHighlightColor: 'transparent' }}
           whileHover={{ y: -2 }}
           whileTap={{ y: 0 }}
           {...props}
@@ -29,6 +30,7 @@ export default function Button({ children, to, onClick, className = '', external
       <Link to={to} className="block w-fit">
         <motion.div 
           className={`${combinedStyle} ${className}`}
+          style={{ WebkitTapHighlightColor: 'transparent' }}
           whileHover={{ y: -2 }}
           whileTap={{ y: 0 }}
           {...props}
@@ -43,6 +45,7 @@ export default function Button({ children, to, onClick, className = '', external
     <motion.button 
       onClick={onClick}
       className={`${combinedStyle} ${className}`}
+      style={{ WebkitTapHighlightColor: 'transparent' }}
       whileHover={{ y: -2 }}
       whileTap={{ y: 0 }}
       {...props}
