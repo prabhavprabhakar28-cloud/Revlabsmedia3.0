@@ -194,9 +194,14 @@ export default function Payment() {
                 )}
                 <div className="border-t border-white/10 pt-3 flex justify-between items-center">
                   <span className="font-sans font-semibold text-white">Total</span>
-                  <span className="text-2xl font-sans font-semibold text-white">
-                    ₹{Number(cartData.total).toLocaleString('en-IN')}
-                  </span>
+                  <div className="text-right">
+                    <span className="text-2xl font-sans font-semibold text-white block">
+                      ₹{Number(cartData.total).toLocaleString('en-IN')}
+                    </span>
+                    <span className="text-[10px] text-white/40 uppercase tracking-widest block -mt-1">
+                      Inclusive of all taxes
+                    </span>
+                  </div>
                 </div>
               </div>
             ) : (

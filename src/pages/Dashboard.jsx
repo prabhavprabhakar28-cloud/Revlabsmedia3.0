@@ -145,7 +145,8 @@ function downloadInvoice(payment, userProfile) {
   <div class="logo">Rev<span>Labs</span></div>
   <h2>Invoice</h2>
   <div class="amount">₹${Number(payment.amount).toLocaleString('en-IN')}</div>
-  <p style="color:#666;font-size:12px;margin-top:8px;text-transform:uppercase;letter-spacing:2px;">${escapeHtml(payment.currency)}</p>
+  <p style="color:#666;font-size:10px;margin-top:4px;text-transform:uppercase;letter-spacing:1px;">Inclusive of all taxes</p>
+  <p style="color:#444;font-size:12px;margin-top:8px;text-transform:uppercase;letter-spacing:2px;">${escapeHtml(payment.currency)}</p>
 
   <hr class="divider"/>
 
@@ -475,7 +476,10 @@ export default function Dashboard() {
                         <p className="text-2xl font-sans font-semibold text-white">
                           ₹{Number(payment.amount).toLocaleString('en-IN')}
                         </p>
-                        <p className="text-white/30 font-sans text-xs">{payment.currency}</p>
+                        <p className="text-[10px] text-white/30 uppercase tracking-widest block text-right -mt-1">
+                          Inc. Taxes
+                        </p>
+                        <p className="text-white/20 font-sans text-[10px] text-right uppercase tracking-tighter mt-1">{payment.currency}</p>
                       </div>
                       {/* Invoice Download — only for paid payments */}
                       {payment.status === 'paid' && (

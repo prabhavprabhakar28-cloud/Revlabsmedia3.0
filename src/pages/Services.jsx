@@ -316,7 +316,10 @@ export default function Services() {
                       </AnimatePresence>
                     </div>
                     <div className="border-t border-white/20 pt-8 mb-8 flex justify-between items-end">
-                      <span className="font-sans text-white/50 uppercase tracking-widest text-xs">Total Estimate</span>
+                      <div>
+                        <span className="font-sans text-white/50 uppercase tracking-widest text-xs block mb-1">Total Estimate</span>
+                        <span className="text-[10px] text-white/30 uppercase tracking-widest block">Inclusive of all taxes</span>
+                      </div>
                       <span className="font-serif italic text-5xl">${videoTotal.toLocaleString()}</span>
                     </div>
                     <Button onClick={triggerVideoBooking} className="w-full text-center text-xl py-6 rounded-[8px]">
@@ -376,7 +379,10 @@ export default function Services() {
                   <span className="capitalize">{pendingBooking.format}</span>
                 </div>
                 <div className="flex justify-between font-sans text-sm text-white border-t border-white/20 pt-4 mt-4">
-                  <span>Total Capital Due</span>
+                  <div>
+                    <span className="block">Total Capital Due</span>
+                    <span className="text-[10px] text-white/40 uppercase tracking-widest block font-sans">Inclusive of all taxes</span>
+                  </div>
                   <span className="text-xl font-medium">${pendingBooking.total.toLocaleString()}</span>
                 </div>
               </div>
