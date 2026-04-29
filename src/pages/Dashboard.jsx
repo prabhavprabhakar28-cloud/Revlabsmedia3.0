@@ -144,14 +144,14 @@ function downloadInvoice(payment, userProfile) {
 <body>
   <div class="logo">Rev<span>Labs</span></div>
   <h2>Invoice</h2>
-  <div class="amount">₹${Number(payment.amount).toLocaleString('en-IN')}</div>
+  <div class="amount">$${Number(payment.amount).toLocaleString('en-US')}</div>
   <p style="color:#666;font-size:10px;margin-top:4px;text-transform:uppercase;letter-spacing:1px;">Inclusive of all taxes</p>
   <p style="color:#444;font-size:12px;margin-top:8px;text-transform:uppercase;letter-spacing:2px;">${escapeHtml(payment.currency)}</p>
 
   <hr class="divider"/>
 
   <div class="row"><span class="label">Invoice ID</span><span>#${escapeHtml(payment.id.slice(0, 8).toUpperCase())}</span></div>
-  <div class="row"><span class="label">Date</span><span>${new Date(payment.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</span></div>
+  <div class="row"><span class="label">Date</span><span>${new Date(payment.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span></div>
   <div class="row"><span class="label">Client</span><span>${escapeHtml(userProfile?.full_name || 'Client')}</span></div>
   <div class="row"><span class="label">Email</span><span>${escapeHtml(userProfile?.email || '—')}</span></div>
   <div class="row"><span class="label">Service</span><span>${escapeHtml(payment.service_type || 'RevLabs Service')}</span></div>
@@ -230,7 +230,7 @@ function ProfileEditForm({ profile, user, updateProfile }) {
 
         {[{ label: 'Email', value: profile?.email || user?.email },
           { label: 'Role', value: profile?.role },
-          { label: 'Member Since', value: profile?.created_at ? new Date(profile.created_at).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }) : '—' }
+          { label: 'Member Since', value: profile?.created_at ? new Date(profile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : '—' }
         ].map(({ label, value }) => (
           <div key={label} className="border-t border-white/5 pt-4">
             <p className="text-white/30 font-sans text-[10px] uppercase tracking-widest mb-1">{label}</p>
@@ -309,7 +309,7 @@ export default function Dashboard() {
             { label: 'Total Reports',   value: reports.length },
             { label: 'Completed',       value: reports.filter(r => r.status === 'completed').length },
             { label: 'Total Payments',  value: payments.length },
-            { label: 'Amount Paid',     value: `₹${totalPaid.toLocaleString('en-IN')}` },
+            { label: 'Amount Paid',     value: `$${totalPaid.toLocaleString('en-US')}` },
           ].map(({ label, value }) => (
             <div key={label} className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 hover:border-white/10 transition-colors">
               <p className="text-white/30 font-sans text-[10px] uppercase tracking-widest mb-2">{label}</p>
@@ -405,7 +405,7 @@ export default function Dashboard() {
                           <p className="text-white/30 font-sans text-sm line-clamp-1">{report.description}</p>
                         )}
                         <p className="text-white/20 font-sans text-xs">
-                          {new Date(report.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                          {new Date(report.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
                         </p>
                       </div>
                       <div className="flex items-center gap-2 text-white/30 group-hover:text-white/60 transition-colors shrink-0">
@@ -468,13 +468,13 @@ export default function Dashboard() {
                         {payment.service_type || 'Service Payment'}
                       </h3>
                       <p className="text-white/20 font-sans text-xs">
-                        {new Date(payment.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        {new Date(payment.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </p>
                     </div>
                     <div className="flex items-center gap-4 shrink-0">
                       <div className="text-right">
                         <p className="text-2xl font-sans font-semibold text-white">
-                          ₹{Number(payment.amount).toLocaleString('en-IN')}
+                          ${Number(payment.amount).toLocaleString('en-US')}
                         </p>
                         <p className="text-[10px] text-white/30 uppercase tracking-widest block text-right -mt-1">
                           Inc. Taxes

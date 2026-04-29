@@ -65,8 +65,8 @@ export default function Payment() {
             'Authorization': `Bearer ${session.access_token}`,
           },
           body: JSON.stringify({
-            amount:      cartData.total,       // Amount in INR
-            currency:    'INR',
+            amount:      cartData.total,       // Amount in USD
+            currency:    'USD',
             service_type: cartData.serviceType || 'RevLabs Service',
           }),
         }
@@ -185,19 +185,19 @@ export default function Payment() {
                 {cartData.items?.map((item, i) => (
                   <div key={i} className="flex justify-between items-center text-sm font-sans">
                     <span className="text-white/70">{item.name}</span>
-                    <span className="text-white">₹{Number(item.price).toLocaleString('en-IN')}</span>
+                    <span className="text-white">${Number(item.price).toLocaleString('en-US')}</span>
                   </div>
                 )) ?? (
                   <div className="flex justify-between items-center text-sm font-sans">
                     <span className="text-white/70">{cartData.serviceType || 'Service Package'}</span>
-                    <span className="text-white">₹{Number(cartData.total).toLocaleString('en-IN')}</span>
+                    <span className="text-white">${Number(cartData.total).toLocaleString('en-US')}</span>
                   </div>
                 )}
                 <div className="border-t border-white/10 pt-3 flex justify-between items-center">
                   <span className="font-sans font-semibold text-white">Total</span>
                   <div className="text-right">
                     <span className="text-2xl font-sans font-semibold text-white block">
-                      ₹{Number(cartData.total).toLocaleString('en-IN')}
+                      ${Number(cartData.total).toLocaleString('en-US')}
                     </span>
                     <span className="text-[10px] text-white/40 uppercase tracking-widest block -mt-1">
                       Inclusive of all taxes
