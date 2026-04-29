@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { CreditCard, Shield, CheckCircle, Loader2, AlertCircle } from 'lucide-react';
@@ -18,21 +18,22 @@ const loadRazorpay = () =>
 
 export default function Payment() {
   const { user, profile } = useAuth();
+  const location = useLocation();
   const navigate = useNavigate();
-
-  // Pull cart data from localStorage (set by Services page)
-  const [cartData, setCartData] = useState(null);
+  const [cartData, setCartData] = useState(location.state || null);
   const [loading, setLoading]   = useState(false);
   const [error, setError]       = useState('');
   const [success, setSuccess]   = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem('revlabs_cart');
-    if (stored) {
-      try { setCartData(JSON.parse(stored)); }
-      catch { setCartData(null); }
+    if (!cartData) {
+      const stored = localStorage.getItem('revlabs_cart');
+      if (stored) {
+        try { setCartData(JSON.parse(stored)); }
+        catch { setCartData(null); }
+      }
     }
-  }, []);
+  }, [cartData]);
 
   // Redirect if not logged in
   useEffect(() => {

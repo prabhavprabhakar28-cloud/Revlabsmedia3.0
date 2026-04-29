@@ -133,8 +133,10 @@ export default function Services() {
       }
 
       console.log('Order saved successfully:', data[0]);
+      const bookingData = { ...pendingBooking, orderId: data[0].id };
+      localStorage.setItem('revlabs_cart', JSON.stringify(bookingData));
       // Navigate to payment with the order record
-      navigate('/payment', { state: { ...pendingBooking, orderId: data[0].id } });
+      navigate('/payment', { state: bookingData });
     } catch (error) {
       console.error('Catch Block Error:', error);
       alert(`Booking Error: ${error.message || 'Unknown error occurred'}`);
