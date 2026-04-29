@@ -91,15 +91,15 @@ export default function Services() {
   const [isSaving, setIsSaving] = useState(false);
 
   const triggerVideoBooking = () => {
-    setPendingBooking({ format: 'Video ' + format, total: videoTotal, breakdown: videoBreakdown });
+    setPendingBooking({ serviceType: 'Video ' + format, total: videoTotal, items: videoBreakdown });
     setIsModalOpen(true);
   };
 
   const triggerStaticBooking = (title, price) => {
     setPendingBooking({
-      format: activeCategory,
+      serviceType: activeCategory,
       total: price,
-      breakdown: [{ label: title, price: price }]
+      items: [{ label: title, price: price }]
     });
     setIsModalOpen(true);
   };
@@ -119,9 +119,9 @@ export default function Services() {
         .insert([
           {
             user_id: user.id,
-            service_type: pendingBooking.format,
+            service_type: pendingBooking.serviceType,
             total_price: pendingBooking.total,
-            breakdown: pendingBooking.breakdown,
+            breakdown: pendingBooking.items,
             status: 'pending'
           }
         ])
@@ -373,12 +373,12 @@ export default function Services() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
             <motion.div initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }} className="bg-[#0a0a0a] border border-white/10 rounded-[12px] p-10 max-w-lg w-full relative">
               <h2 className="text-4xl font-serif italic mb-4">Confirm Scale Architecture</h2>
-              <p className="text-white/60 font-sans mb-8 leading-relaxed">You are staging the deployment of our premium {pendingBooking.format} package. Proceeding will verify your slot and take you to secure checkout.</p>
+              <p className="text-white/60 font-sans mb-8 leading-relaxed">You are staging the deployment of our premium {pendingBooking.serviceType} package. Proceeding will verify your slot and take you to secure checkout.</p>
               
               <div className="space-y-4 mb-10 bg-white/5 p-6 rounded-[8px] border border-white/10">
                 <div className="flex justify-between font-sans text-sm text-white/80">
                   <span>Selected Engine</span>
-                  <span className="capitalize">{pendingBooking.format}</span>
+                  <span className="capitalize">{pendingBooking.serviceType}</span>
                 </div>
                 <div className="flex justify-between font-sans text-sm text-white border-t border-white/20 pt-4 mt-4">
                   <div>
