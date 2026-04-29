@@ -24,7 +24,7 @@ export default function Footer() {
             <ul className="space-y-4 text-white font-sans text-sm">
               <li><Link to="/privacy" className="hover:text-white/70 transition-colors">Privacy Policy</Link></li>
               <li><Link to="/terms" className="hover:text-white/70 transition-colors">Terms & Conditions</Link></li>
-              <li><a href="mailto:hello@revlabs.studio" className="hover:text-white/70 transition-colors">hello@revlabs.studio</a></li>
+              <li><a href="mailto:hello@revlabs.online" className="hover:text-white/70 transition-colors">hello@revlabs.online</a></li>
             </ul>
           </div>
         </div>

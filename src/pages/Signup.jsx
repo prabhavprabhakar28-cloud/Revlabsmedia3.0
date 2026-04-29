@@ -102,7 +102,7 @@ export default function Signup() {
         <form onSubmit={handleSubmit} className="space-y-5">
           {[
             { label: 'Full Name', type: 'text',     value: name,            set: setName,            placeholder: 'John Doe',            maxLen: 100 },
-            { label: 'Email',     type: 'email',    value: email,           set: setEmail,           placeholder: 'hello@revlabs.com',   maxLen: 254 },
+            { label: 'Email',     type: 'email',    value: email,           set: setEmail,           placeholder: 'hello@revlabs.online',   maxLen: 254 },
             { label: 'Password',  type: 'password', value: password,        set: setPassword,        placeholder: '••••••••', maxLen: 128 },
             { label: 'Confirm',   type: 'password', value: confirmPassword, set: setConfirmPassword, placeholder: '••••••••', maxLen: 128 },
           ].map(({ label, type, value, set, placeholder, maxLen }) => (

@@ -33,7 +33,7 @@ export default function Contact() {
       // Silently notify admin about new contact submission
       await sendEmail({
         type: 'report_submitted',
-        to: 'hello@revlabs.com',
+        to: 'hello@revlabs.online',
         name: 'Admin',
         data: { title: `New contact from ${formData.name} (${formData.email}): ${formData.message.slice(0, 80)}` },
       });
@@ -72,7 +72,7 @@ export default function Contact() {
           <div className="space-y-6">
             <div>
               <p className="text-white/30 font-sans text-xs uppercase tracking-widest mb-2">Email Us</p>
-              <a href="mailto:hello@revlabs.com" className="text-2xl font-serif italic hover:text-white/80 transition-colors">hello@revlabs.com</a>
+              <a href="mailto:hello@revlabs.online" className="text-2xl font-serif italic hover:text-white/80 transition-colors">hello@revlabs.online</a>
             </div>
             <div>
               <p className="text-white/30 font-sans text-xs uppercase tracking-widest mb-2">Based</p>

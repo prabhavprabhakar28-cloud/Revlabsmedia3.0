@@ -161,7 +161,7 @@ function downloadInvoice(payment, userProfile) {
   <hr class="divider"/>
 
   <div class="footer">
-    <p>RevLabs Media House · hello@revlabs.com · revlabs.com</p>
+    <p>RevLabs Media House · hello@revlabs.online · revlabs.online</p>
     <p style="margin-top:8px;">This is a computer-generated invoice and does not require a signature.</p>
   </div>
 </body>
