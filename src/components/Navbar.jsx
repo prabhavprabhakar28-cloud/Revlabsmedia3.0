@@ -51,28 +51,31 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled || menuOpen ? 'bg-black/80 backdrop-blur-md py-4' : 'bg-transparent py-6'
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          isScrolled || menuOpen ? 'bg-black/80 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent py-6'
         }`}
         style={{ WebkitTapHighlightColor: 'transparent' }}
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <Link to="/" className="z-10 hover:opacity-80 transition-opacity flex-shrink-0">
-            <img src={logo} alt="RevLabs" className="h-8 w-auto object-contain" />
-          </Link>
+        <div className="max-w-7xl mx-auto px-6 flex items-center">
+          {/* Logo Column - Flex 1 to balance the right side */}
+          <div className="flex-1 flex justify-start items-center">
+            <Link to="/" className="z-10 hover:opacity-80 transition-opacity flex-shrink-0">
+              <img src={logo} alt="RevLabs" className="h-8 w-auto object-contain" />
+            </Link>
+          </div>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-2 justify-center flex-1">
+          {/* Desktop Nav - Absolute Center (visually) */}
+          <nav className="hidden md:flex items-center gap-1 bg-white/5 backdrop-blur-md border border-white/10 rounded-full p-1">
             {links.map((link) => {
               const isActive = location.pathname === link.path;
               return (
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`relative px-4 py-2 rounded-full font-sans text-sm transition-all duration-300 ${
+                  className={`px-4 py-1.5 rounded-full font-sans text-sm transition-all duration-300 ${
                     isActive
                       ? 'text-white bg-white/10'
-                      : 'text-white/70 hover:text-white md:hover:bg-white/10'
+                      : 'text-white/60 hover:text-white hover:bg-white/5'
                   }`}
                 >
                   {link.name}
@@ -82,10 +85,10 @@ export default function Navbar() {
             {user && (
               <Link
                 to="/dashboard"
-                className={`relative px-4 py-2 rounded-full font-sans text-sm transition-all duration-300 ${
+                className={`px-4 py-1.5 rounded-full font-sans text-sm transition-all duration-300 ${
                   location.pathname === '/dashboard'
                     ? 'text-white bg-white/10'
-                    : 'text-white/70 hover:text-white md:hover:bg-white/10'
+                    : 'text-white/60 hover:text-white hover:bg-white/5'
                 }`}
               >
                 Dashboard
@@ -94,10 +97,10 @@ export default function Navbar() {
             {isAdmin && (
               <Link
                 to="/admin"
-                className={`relative px-4 py-2 rounded-full font-sans text-sm transition-all duration-300 ${
+                className={`px-4 py-1.5 rounded-full font-sans text-sm transition-all duration-300 ${
                   location.pathname.startsWith('/admin')
                     ? 'text-white bg-white/10'
-                    : 'text-white/70 hover:text-white md:hover:bg-white/10'
+                    : 'text-white/60 hover:text-white hover:bg-white/5'
                 }`}
               >
                 Admin
@@ -105,47 +108,51 @@ export default function Navbar() {
             )}
           </nav>
 
-          {/* Desktop Auth */}
-          <div className="hidden md:flex items-center gap-4 flex-shrink-0">
-            {user ? (
-              <>
-                <div className="flex flex-col items-end">
-                  <span className="text-white/80 font-sans text-sm">
-                    Hi, {(profile?.full_name || user?.email || 'User').split(' ')[0]}
-                  </span>
-                  {isAdmin && (
-                    <span className="text-[10px] font-sans font-bold text-white/40 tracking-widest uppercase">
-                      Admin
+          {/* Desktop Auth / Mobile Toggle Column - Flex 1 to balance the left side */}
+          <div className="flex-1 flex justify-end items-center gap-4">
+            {/* Desktop Auth */}
+            <div className="hidden md:flex items-center gap-4">
+              {user ? (
+                <>
+                  <div className="flex flex-col items-end">
+                    <span className="text-white/80 font-sans text-[13px]">
+                      Hi, {(profile?.full_name || user?.email || 'User').split(' ')[0]}
                     </span>
-                  )}
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="px-4 py-2 rounded-full font-sans text-sm text-white border border-white/20 md:hover:bg-white/10 transition-colors duration-300"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className="text-white/70 hover:text-white font-sans text-sm transition-colors duration-300">
-                  Login
-                </Link>
-                <Link to="/signup" className="px-5 py-2 bg-white text-black rounded-full font-sans text-sm font-medium hover:bg-white/90 transition-colors duration-300">
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </div>
+                    {isAdmin && (
+                      <span className="text-[9px] font-sans font-bold text-white/30 tracking-widest uppercase">
+                        Admin
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-1.5 rounded-full font-sans text-sm text-white border border-white/10 hover:bg-white/5 transition-colors duration-300"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="text-white/60 hover:text-white font-sans text-sm transition-colors duration-300">
+                    Login
+                  </Link>
+                  <Link to="/signup" className="px-5 py-2 bg-white text-black rounded-full font-sans text-sm font-medium hover:bg-white/90 transition-colors duration-300">
+                    Sign Up
+                  </Link>
+                </>
+              )}
+            </div>
 
-          {/* Mobile Hamburger Button */}
-          <button
-            className="md:hidden flex items-center justify-center w-10 h-10 text-white z-10"
-            onClick={() => setMenuOpen(prev => !prev)}
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-          >
-            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+            {/* Mobile Hamburger Button */}
+            <button
+              className="md:hidden flex items-center justify-center w-10 h-10 text-white z-10 transition-transform active:scale-95 bg-transparent"
+              onClick={() => setMenuOpen(prev => !prev)}
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              style={{ WebkitTapHighlightColor: 'transparent' }}
+            >
+              {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -175,6 +182,7 @@ export default function Navbar() {
                       className={`block text-4xl font-sans font-light py-3 border-b border-white/5 transition-colors ${
                         isActive ? 'text-white' : 'text-white/50 hover:text-white'
                       }`}
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
                       {link.name}
                     </Link>
@@ -188,6 +196,7 @@ export default function Navbar() {
                     className={`block text-4xl font-sans font-light py-3 border-b border-white/5 transition-colors ${
                       location.pathname === '/dashboard' ? 'text-white' : 'text-white/50 hover:text-white'
                     }`}
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
                   >
                     Dashboard
                   </Link>
@@ -200,6 +209,7 @@ export default function Navbar() {
                     className={`block text-4xl font-sans font-light py-3 border-b border-white/5 transition-colors ${
                       location.pathname.startsWith('/admin') ? 'text-white' : 'text-white/50 hover:text-white'
                     }`}
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
                   >
                     Admin
                   </Link>
