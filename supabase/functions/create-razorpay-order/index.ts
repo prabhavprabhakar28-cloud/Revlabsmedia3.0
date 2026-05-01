@@ -41,7 +41,7 @@ serve(async (req: Request) => {
     }
 
     // ── 2. Parse & validate request body ─────────────────────
-    const { amount, currency = "INR", service_type } = await req.json();
+    const { amount, currency = "USD", service_type } = await req.json();
 
     if (!amount || typeof amount !== "number" || amount <= 0) {
       return new Response(JSON.stringify({ error: "Invalid amount" }), {

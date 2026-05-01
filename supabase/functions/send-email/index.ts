@@ -58,7 +58,7 @@ const templates = {
           <p style="color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Service</p>
           <p style="font-weight: 600; margin: 4px 0 16px;">${data.serviceType ?? "RevLabs Service"}</p>
           <p style="color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Amount Paid</p>
-          <p style="font-weight: 600; font-size: 20px; margin: 4px 0 16px;">₹${Number(data.amount).toLocaleString("en-IN")} ${data.currency}</p>
+          <p style="font-weight: 600; font-size: 20px; margin: 4px 0 16px;">$${Number(data.amount).toLocaleString("en-US")} ${data.currency}</p>
           <p style="color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Payment ID</p>
           <p style="font-family: monospace; color: #aaa; font-size: 12px; margin: 4px 0;">${data.paymentId}</p>
         </div>

@@ -38,7 +38,7 @@ export default function AdminPayments() {
           <h2 className="text-3xl font-sans font-light text-white tracking-tight">Financial <span className="font-serif italic text-white/40">Audit</span></h2>
           <div className="flex items-center gap-2 mt-1">
             <span className="text-white/40 font-sans text-sm">Total revenue:</span>
-            <span className="text-emerald-400 font-sans font-bold text-sm tracking-wide">₹{totalRevenue.toLocaleString('en-IN')}</span>
+            <span className="text-emerald-400 font-sans font-bold text-sm tracking-wide">${totalRevenue.toLocaleString('en-US')}</span>
           </div>
         </div>
 
@@ -118,7 +118,7 @@ export default function AdminPayments() {
                       <p className="text-white/20 font-sans text-[10px] tracking-tight truncate mt-0.5">{payment.provider_order_id}</p>
                     </td>
                     <td className="py-6 px-6">
-                      <p className="text-white font-sans font-bold text-sm tracking-tight">₹{Number(payment.amount).toLocaleString('en-IN')}</p>
+                      <p className="text-white font-sans font-bold text-sm tracking-tight">${Number(payment.amount).toLocaleString('en-US')}</p>
                       <p className="text-white/30 font-sans text-[10px] uppercase tracking-widest">{payment.currency}</p>
                     </td>
                     <td className="py-6 px-6">
@@ -132,7 +132,7 @@ export default function AdminPayments() {
                     </td>
                     <td className="py-6 px-6 whitespace-nowrap">
                       <p className="text-white/40 font-sans text-xs">
-                        {new Date(payment.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                        {new Date(payment.created_at).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}
                       </p>
                     </td>
                   </tr>

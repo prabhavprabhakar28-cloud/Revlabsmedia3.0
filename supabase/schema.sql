@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS public.payments (
   id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id               UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
   amount                NUMERIC(12, 2) NOT NULL,
-  currency              TEXT NOT NULL DEFAULT 'INR',
+  currency              TEXT NOT NULL DEFAULT 'USD',
   status                TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'failed', 'refunded')),
   payment_provider      TEXT NOT NULL DEFAULT 'razorpay' CHECK (payment_provider IN ('razorpay', 'stripe')),
   provider_order_id     TEXT,          -- Razorpay order_id / Stripe PaymentIntent id

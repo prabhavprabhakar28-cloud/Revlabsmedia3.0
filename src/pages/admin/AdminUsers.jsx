@@ -97,7 +97,7 @@ export default function AdminUsers() {
                   <p className="text-white/40 font-sans text-sm">{profile.email}</p>
                   <div className="flex items-center gap-3 mt-1.5">
                     <span className="text-white/20 font-sans text-[11px] uppercase tracking-wider">
-                      Joined {new Date(profile.created_at).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      Joined {new Date(profile.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </span>
                   </div>
                 </div>

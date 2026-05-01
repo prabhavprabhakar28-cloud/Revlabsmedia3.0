@@ -236,12 +236,12 @@ export default function ReportDetail() {
             {
               icon: CalendarDays,
               label: 'Submitted',
-              value: createdDate.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
+              value: createdDate.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
             },
             {
               icon: Clock,
               label: 'Last Updated',
-              value: updatedDate.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
+              value: updatedDate.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
             },
           ].map(({ icon: Icon, label, value }) => (
             <div key={label} className="bg-white/[0.02] border border-white/5 rounded-xl p-6">

@@ -147,7 +147,7 @@ export default function AdminReports() {
                     </td>
                     <td className="py-6 px-6">
                       <p className="text-white/40 font-sans text-xs">
-                        {new Date(report.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                        {new Date(report.created_at).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}
                       </p>
                     </td>
                     <td className="py-6 px-6">

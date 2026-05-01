@@ -18,12 +18,12 @@ export default function Terms() {
 
         <section>
           <h2 className="text-xl text-white mb-4">3. Revision Policy</h2>
-          <p>Each package standardly does not include free revisions unless specified. Any extra revisions requested post-delivery will incur a flat fee of ₹20 per revision round, to be billed separately.</p>
+          <p>Each package standardly does not include free revisions unless specified. Any extra revisions requested post-delivery will incur a flat fee of $20 per revision round, to be billed separately.</p>
         </section>
 
         <section>
           <h2 className="text-xl text-white mb-4">4. Payment Terms</h2>
-          <p>All payments must be made securely via our integrated payment gateway. We require full upfront payment for packages below ₹500. For custom/long-term contracts, milestone-based payments apply. Late invoices incur a 5% monthly fee.</p>
+          <p>All payments must be made securely via our integrated payment gateway. We require full upfront payment for packages below $500. For custom/long-term contracts, milestone-based payments apply. Late invoices incur a 5% monthly fee.</p>
         </section>
 
         <section>

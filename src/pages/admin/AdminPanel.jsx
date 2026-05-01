@@ -110,7 +110,7 @@ export default function AdminPanel() {
                         { label: 'Total Users',     value: users.length,    icon: Users,      color: 'from-blue-500/20' },
                         { label: 'Active Reports',  value: reports.length,  icon: FileText,   color: 'from-purple-500/20' },
                         { label: 'Pending Task',    value: pendingReports,  icon: Shield,     color: 'from-amber-500/20' },
-                        { label: 'Total Revenue',   value: `₹${totalRevenue.toLocaleString('en-IN')}`, icon: CreditCard, color: 'from-emerald-500/20' },
+                        { label: 'Total Revenue',   value: `$${totalRevenue.toLocaleString('en-US')}`, icon: CreditCard, color: 'from-emerald-500/20' },
                       ].map(({ label, value, icon: Icon, color }) => (
                         <div key={label} className={`relative group overflow-hidden bg-white/[0.03] border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-500`}>
                           <div className={`absolute inset-0 bg-gradient-to-br ${color} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
@@ -171,7 +171,7 @@ export default function AdminPanel() {
                                 {/* Tooltip */}
                                 <div className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                                   <div className="bg-white text-black text-[10px] font-bold px-2 py-1 rounded shadow-xl">
-                                    ₹{m.value.toLocaleString()}
+                                    $${m.value.toLocaleString()}
                                   </div>
                                 </div>
                                 {/* Bar */}
