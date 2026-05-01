@@ -144,7 +144,7 @@ function downloadInvoice(payment, userProfile) {
 <body>
   <div class="logo">Rev<span>Labs</span></div>
   <h2>Invoice</h2>
-  <div class="amount">$${Number(payment.amount).toLocaleString('en-US')}</div>
+  <div class="amount">₹${Number(payment.amount).toLocaleString('en-IN')}</div>
   <p style="color:#666;font-size:10px;margin-top:4px;text-transform:uppercase;letter-spacing:1px;">Inclusive of all taxes</p>
   <p style="color:#444;font-size:12px;margin-top:8px;text-transform:uppercase;letter-spacing:2px;">${escapeHtml(payment.currency)}</p>
 
@@ -309,7 +309,7 @@ export default function Dashboard() {
             { label: 'Total Reports',   value: reports.length },
             { label: 'Completed',       value: reports.filter(r => r.status === 'completed').length },
             { label: 'Total Payments',  value: payments.length },
-            { label: 'Amount Paid',     value: `$${totalPaid.toLocaleString('en-US')}` },
+            { label: 'Amount Paid',     value: `₹${totalPaid.toLocaleString('en-IN')}` },
           ].map(({ label, value }) => (
             <div key={label} className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 hover:border-white/10 transition-colors">
               <p className="text-white/30 font-sans text-[10px] uppercase tracking-widest mb-2">{label}</p>
@@ -474,7 +474,7 @@ export default function Dashboard() {
                     <div className="flex items-center gap-4 shrink-0">
                       <div className="text-right">
                         <p className="text-2xl font-sans font-semibold text-white">
-                          ${Number(payment.amount).toLocaleString('en-US')}
+                          ₹{Number(payment.amount).toLocaleString('en-IN')}
                         </p>
                         <p className="text-[10px] text-white/30 uppercase tracking-widest block text-right -mt-1">
                           Inc. Taxes

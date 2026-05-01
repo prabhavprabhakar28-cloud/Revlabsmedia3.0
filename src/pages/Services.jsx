@@ -35,7 +35,7 @@ export default function Services() {
 
   // Constants for Video (USD)
   const REELS_TIERS = {
-    starter: { price: 60, label: 'Starter' },
+    starter: { price: 1, label: 'Starter' },
     growth: { price: 120, label: 'Growth' },
     premium: { price: 200, label: 'Premium' }
   };
@@ -220,9 +220,9 @@ export default function Services() {
                         {/* New Reels Tiers */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
                           {[
-                            { id: 'starter', label: 'Starter', price: '$60 / clip', desc: 'Clean cuts & basic pacing.', details: [{label: 'Deliverables', value: '1080p MP4'}, {label: 'Features', value: 'Basic cuts, text'}, {label: 'What\'s included', value: '1 round of revisions'}, {label: 'Benefits', value: 'Cost-effective content'}] },
-                            { id: 'growth', label: 'Growth', price: '$120 / clip', desc: 'High-impact edits, subtitles & sound design.', popular: true, details: [{label: 'Deliverables', value: '4K MP4'}, {label: 'Features', value: 'Motion graphics, sound effects'}, {label: 'What\'s included', value: '2 rounds of revisions'}, {label: 'Benefits', value: 'High retention and engagement'}] },
-                            { id: 'premium', label: 'Premium', price: '$200+ / clip', desc: 'Complex storytelling & heavy assets.', details: [{label: 'Deliverables', value: '4K MP4 + Source files'}, {label: 'Features', value: 'Advanced VFX, custom sound design'}, {label: 'What\'s included', value: 'Unlimited revisions'}, {label: 'Benefits', value: 'Cinematic quality for top tier creators'}] }
+                            { id: 'starter', label: 'Starter', price: '₹1 / clip', desc: 'Clean cuts & basic pacing.', details: [{label: 'Deliverables', value: '1080p MP4'}, {label: 'Features', value: 'Basic cuts, text'}, {label: 'What\'s included', value: '1 round of revisions'}, {label: 'Benefits', value: 'Cost-effective content'}] },
+                            { id: 'growth', label: 'Growth', price: '₹120 / clip', desc: 'High-impact edits, subtitles & sound design.', popular: true, details: [{label: 'Deliverables', value: '4K MP4'}, {label: 'Features', value: 'Motion graphics, sound effects'}, {label: 'What\'s included', value: '2 rounds of revisions'}, {label: 'Benefits', value: 'High retention and engagement'}] },
+                            { id: 'premium', label: 'Premium', price: '₹200+ / clip', desc: 'Complex storytelling & heavy assets.', details: [{label: 'Deliverables', value: '4K MP4 + Source files'}, {label: 'Features', value: 'Advanced VFX, custom sound design'}, {label: 'What\'s included', value: 'Unlimited revisions'}, {label: 'Benefits', value: 'Cinematic quality for top tier creators'}] }
                           ].map((tier) => (
                             <div 
                               key={tier.id}
@@ -253,7 +253,7 @@ export default function Services() {
                         <div className="bg-[#050505] border border-white/10 rounded-[12px] p-8">
                           <h3 className="text-xl font-sans mb-6 font-semibold">Reels Growth Engine Add-ons</h3>
                           <div className="space-y-4">
-                            {Object.entries({ motionGraphics: 'Motion Graphics (+$20/clip)', animations: 'Animations (+$10/clip)', vfx: 'VFX (+$15/clip)' }).map(([key, label]) => (
+                            {Object.entries({ motionGraphics: 'Motion Graphics (+₹20/clip)', animations: 'Animations (+₹10/clip)', vfx: 'VFX (+₹15/clip)' }).map(([key, label]) => (
                               <label key={key} className="flex items-center gap-4 cursor-pointer">
                                 <input type="checkbox" checked={reelsAddons[key]} onChange={(e) => setReelsAddons({...reelsAddons, [key]: e.target.checked})} className="w-5 h-5 rounded-[4px] accent-white" />
                                 <span className="font-sans text-white/80">{label}</span>
@@ -267,12 +267,12 @@ export default function Services() {
                         <div className="bg-[#050505] border border-white/10 rounded-[12px] p-8">
                           <div className="flex justify-between items-center mb-6"><h3 className="text-xl font-sans font-semibold">Runtime Duration</h3><span className="text-3xl font-serif italic">{longMinutes} mins</span></div>
                           <input type="range" min="5" max="60" step="5" value={longMinutes} onChange={(e) => setLongMinutes(parseInt(e.target.value))} className="w-full accent-[#f8f8f8]" />
-                          <p className="text-white/50 text-sm mt-4 text-right">${LONG_BASE} per 5-minute block</p>
+                          <p className="text-white/50 text-sm mt-4 text-right">₹{LONG_BASE} per 5-minute block</p>
                         </div>
                         <div className="bg-[#050505] border border-white/10 rounded-[12px] p-8">
                           <h3 className="text-xl font-sans mb-6 font-semibold">Premium Asset Add-ons</h3>
                           <div className="space-y-4">
-                            {Object.entries({ motionGraphics: 'Motion Graphics (+$80 flat)', animations: 'Animations (+$60 flat)', vfx: 'VFX (+$40 flat)' }).map(([key, label]) => (
+                            {Object.entries({ motionGraphics: 'Motion Graphics (+₹80 flat)', animations: 'Animations (+₹60 flat)', vfx: 'VFX (+₹40 flat)' }).map(([key, label]) => (
                               <label key={key} className="flex items-center gap-4 cursor-pointer">
                                 <input type="checkbox" checked={longAddons[key]} onChange={(e) => setLongAddons({...longAddons, [key]: e.target.checked})} className="w-5 h-5 rounded-[4px] accent-white" />
                                 <span className="font-sans text-white/80">{label}</span>
@@ -288,7 +288,7 @@ export default function Services() {
                     <div>
                       <h3 className="text-xl font-sans mb-6 font-semibold">Color Grading Standard</h3>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        {[ { id: 'none', label: 'Raw' }, { id: 'standard', label: 'Standard (+$80)' }, { id: 'cinematic', label: 'Cinematic (+$150)' } ].map(opt => (
+                        {[ { id: 'none', label: 'Raw' }, { id: 'standard', label: 'Standard (+₹80)' }, { id: 'cinematic', label: 'Cinematic (+₹150)' } ].map(opt => (
                           <button key={opt.id} onClick={() => setColorGrading(opt.id)} className={`py-4 px-4 rounded-[8px] text-sm transition-all font-sans ${colorGrading === opt.id ? 'bg-[#f8f8f8] text-black' : 'bg-transparent text-white border border-white/20 hover:bg-white/10'}`}>
                             {opt.label}
                           </button>
@@ -298,7 +298,7 @@ export default function Services() {
                     <div className="pt-8 border-t border-white/10">
                       <div className="flex justify-between items-center mb-6"><h3 className="text-xl font-sans font-semibold">Refinement Passes</h3><span className="text-3xl font-serif italic">{revisions}</span></div>
                       <input type="range" min="0" max="10" value={revisions} onChange={(e) => setRevisions(parseInt(e.target.value))} className="w-full accent-white" />
-                      <p className="text-white/50 text-sm mt-4 text-right">${REVISION_FEE} per additional revision round</p>
+                      <p className="text-white/50 text-sm mt-4 text-right">₹{REVISION_FEE} per additional revision round</p>
                     </div>
                   </div>
                 </div>
@@ -312,7 +312,7 @@ export default function Services() {
                         {videoBreakdown.map((item, idx) => (
                           <motion.div key={idx} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, height: 0 }} className="flex justify-between text-white/80 font-sans text-sm tracking-wide">
                             <span className="pr-4">{item.label}</span>
-                            <span className="font-medium pr-1">${item.price.toLocaleString()}</span>
+                            <span className="font-medium pr-1">₹{item.price.toLocaleString()}</span>
                           </motion.div>
                         ))}
                       </AnimatePresence>
@@ -322,12 +322,12 @@ export default function Services() {
                         <span className="font-sans text-white/50 uppercase tracking-widest text-xs block mb-1">Total Estimate</span>
                         <span className="text-[10px] text-white/30 uppercase tracking-widest block">Inclusive of all taxes</span>
                       </div>
-                      <span className="font-serif italic text-5xl">${videoTotal.toLocaleString()}</span>
+                      <span className="font-serif italic text-5xl">₹{videoTotal.toLocaleString()}</span>
                     </div>
                     <Button onClick={triggerVideoBooking} className="w-full text-center text-xl py-6 rounded-[8px]">
                       Proceed to Booking
                     </Button>
-                    <p className="text-white/40 text-xs text-center mt-4">Calculations are in USD ($) representing premium market rates.</p>
+                    <p className="text-white/40 text-xs text-center mt-4">Calculations are in INR (₹) representing premium market rates.</p>
                   </div>
                 </div>
               </motion.div>
@@ -351,7 +351,7 @@ export default function Services() {
                     </div>
                     <div className="mt-8">
                       <div className="text-3xl font-sans font-light text-white mb-8 border-t border-white/10 pt-8">
-                        ${pkg.price.toLocaleString()}<span className="text-base text-white/50 font-sans">{pkg.unit}</span>
+                        ₹{pkg.price.toLocaleString()}<span className="text-base text-white/50 font-sans">{pkg.unit}</span>
                       </div>
                       <Button onClick={() => triggerStaticBooking(`${activeCategory} - ${pkg.title}`, pkg.price)} variant="primary" className="w-full text-center rounded-[8px]">
                         Secure Package
@@ -385,7 +385,7 @@ export default function Services() {
                     <span className="block">Total Capital Due</span>
                     <span className="text-[10px] text-white/40 uppercase tracking-widest block font-sans">Inclusive of all taxes</span>
                   </div>
-                  <span className="text-xl font-medium">${pendingBooking.total.toLocaleString()}</span>
+                  <span className="text-xl font-medium">₹{pendingBooking.total.toLocaleString()}</span>
                 </div>
               </div>
 
