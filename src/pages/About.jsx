@@ -6,9 +6,9 @@ import { useSEO } from '../hooks/useSEO';
 export default function About() {
   useSEO({ title: 'About Us', description: 'Learn about RevLabs Media House — our story, team, and vision for world-class creative production.', canonical: '/about' });
   const timeline = [
-    { year: '2023', title: 'Founded', description: 'RevLabs was established with a mission to elevate visual storytelling for creators.' },
-    { year: '2024', title: 'BBA', description: 'Expanding our business foundations and building an elite team of editors.' },
-    { year: '2025', title: 'Building', description: 'Scaling operations globally and launching premium cinematic packages.' }
+    { year: '2024', title: 'Started Freelancing', description: 'Began working with creators and brands, building high-performing edits and cinematic content independently.' },
+    { year: '2025', title: 'Started Expanding', description: 'Scaled operations, built a growing creative team, and started working with international clients.' },
+    { year: '2026', title: 'Launched Revlabs Media', description: 'Officially launched Revlabs Media as a premium creative agency focused on cinematic storytelling and viral content production.' }
   ];
 
   return (
