@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../assets/logo.png';
 import { useAuth } from '../context/AuthContext';
+import NotificationBell from './NotificationBell';
 import { Menu, X } from 'lucide-react';
 
 export default function Navbar() {
@@ -114,6 +115,7 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-4">
               {user ? (
                 <>
+                  <NotificationBell />
                   <div className="flex flex-col items-end">
                     <span className="text-white/80 font-sans text-[13px]">
                       Hi, {(profile?.full_name || user?.email || 'User').split(' ')[0]}

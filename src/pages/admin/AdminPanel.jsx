@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link, Routes, Route, useLocation } from 'react-router-dom';
 import { useAdminData } from '../../hooks/useAdminData';
 import AdminReports from './AdminReports';
@@ -7,45 +7,201 @@ import AdminUsers from './AdminUsers';
 import AdminPayments from './AdminPayments';
 import AdminPortfolio from './AdminPortfolio';
 import AdminContacts from './AdminContacts';
-import { Users, FileText, CreditCard, LayoutDashboard, Shield, Briefcase, Inbox } from 'lucide-react';
+import AdminWorkflow from './AdminWorkflow';
+import AdminMeetings from './AdminMeetings';
+import {
+  Users, FileText, CreditCard, LayoutDashboard, Shield,
+  Briefcase, Inbox, Kanban, Calendar,
+  TrendingUp, TrendingDown, ArrowUpRight,
+  DollarSign, Package, AlertCircle,
+} from 'lucide-react';
+
+// ── Stat Card ─────────────────────────────────────────────────
+function StatCard({ label, value, sub, trend, trendLabel, icon: Icon, gradient, loading }) {
+  const isPositive = trend >= 0;
+  return (
+    <div className={`relative group overflow-hidden bg-white/[0.03] border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-500`}>
+      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+      <div className="relative">
+        <div className="flex justify-between items-start mb-5">
+          <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+            <Icon className="w-5 h-5 text-white/60" />
+          </div>
+          {trend !== undefined && !loading && (
+            <div className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold font-sans uppercase tracking-wider ${
+              isPositive ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'
+            }`}>
+              {isPositive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+              {Math.abs(trend)}%
+            </div>
+          )}
+        </div>
+        <p className="text-white/40 font-sans text-[10px] uppercase tracking-[0.2em] mb-1">{label}</p>
+        {loading ? (
+          <div className="h-9 bg-white/5 rounded-lg animate-pulse w-24 mb-1" />
+        ) : (
+          <p className="text-3xl font-sans font-semibold tracking-tight text-white mb-1">{value}</p>
+        )}
+        {sub && <p className="text-white/30 font-sans text-xs">{sub}</p>}
+        {trendLabel && !loading && (
+          <p className="text-white/20 font-sans text-[10px] mt-1">{trendLabel}</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── Revenue Bar Chart ─────────────────────────────────────────
+function RevenueChart({ data, loading }) {
+  const maxVal = Math.max(...data.map(m => m.value), 100);
+  return (
+    <div className="h-52 flex items-end gap-2 md:gap-4 px-1">
+      {loading
+        ? Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="flex-1 flex flex-col items-center gap-2">
+              <div
+                className="w-full max-w-[40px] rounded-t-lg bg-white/5 animate-pulse"
+                style={{ height: `${20 + Math.random() * 60}%` }}
+              />
+              <div className="h-2 w-6 bg-white/5 rounded animate-pulse" />
+            </div>
+          ))
+        : data.map((m, i) => (
+          <div key={i} className="flex-1 flex flex-col items-center group">
+            <div className="relative w-full flex flex-col items-center justify-end h-44">
+              {/* Hover tooltip */}
+              <div className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                <div className="bg-white text-black text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-xl whitespace-nowrap">
+                  ${m.value.toLocaleString()}
+                </div>
+              </div>
+              {/* Bar */}
+              <motion.div
+                initial={{ height: 0 }}
+                animate={{ height: `${Math.max((m.value / maxVal) * 100, m.value > 0 ? 4 : 0)}%` }}
+                transition={{ duration: 0.8, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                className={`w-full max-w-[40px] rounded-t-lg transition-colors duration-300 ${
+                  m.value > 0
+                    ? 'bg-gradient-to-t from-white/20 to-white group-hover:from-white/40 group-hover:to-white'
+                    : 'bg-white/5'
+                }`}
+              />
+            </div>
+            <span className="mt-3 font-sans text-[10px] text-white/30 uppercase tracking-widest group-hover:text-white/60 transition-colors">
+              {m.name}
+            </span>
+          </div>
+        ))}
+    </div>
+  );
+}
+
+// ── Recent Activity Feed ──────────────────────────────────────
+function ActivityFeed({ payments, reports, meetings }) {
+  const items = [
+    ...payments.slice(0, 5).map(p => ({
+      type: 'payment',
+      label: p.status === 'paid' ? `Payment received — $${Number(p.amount).toLocaleString()}` : `Payment ${p.status}`,
+      sub:   p.profiles?.full_name || p.profiles?.email || '—',
+      time:  p.created_at,
+      color: p.status === 'paid' ? 'text-emerald-400' : p.status === 'failed' ? 'text-red-400' : 'text-yellow-400',
+      icon:  CreditCard,
+    })),
+    ...reports.slice(0, 3).map(r => ({
+      type: 'report',
+      label: `Project: ${r.title}`,
+      sub:   r.profiles?.full_name || '—',
+      time:  r.updated_at,
+      color: 'text-blue-400',
+      icon:  FileText,
+    })),
+    ...meetings.slice(0, 2).map(m => ({
+      type: 'meeting',
+      label: `Meeting: ${m.meeting_type} (${m.status})`,
+      sub:   m.profiles?.full_name || '—',
+      time:  m.created_at,
+      color: 'text-purple-400',
+      icon:  Calendar,
+    })),
+  ]
+    .sort((a, b) => new Date(b.time) - new Date(a.time))
+    .slice(0, 8);
+
+  if (items.length === 0) return (
+    <p className="text-white/20 font-sans text-sm text-center py-8">No recent activity.</p>
+  );
+
+  return (
+    <div className="space-y-1">
+      {items.map((item, i) => {
+        const Icon = item.icon;
+        return (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: i * 0.04 }}
+            className="flex items-start gap-3 p-3 rounded-xl hover:bg-white/[0.03] transition-colors"
+          >
+            <div className={`p-2 rounded-lg bg-white/5 mt-0.5 shrink-0`}>
+              <Icon className={`w-3.5 h-3.5 ${item.color}`} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-white/80 font-sans text-sm truncate">{item.label}</p>
+              <p className="text-white/30 font-sans text-xs">{item.sub}</p>
+            </div>
+            <p className="text-white/20 font-sans text-[10px] shrink-0 mt-1">
+              {new Date(item.time).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+            </p>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function AdminPanel() {
-  const { users, reports, payments, portfolio, loading } = useAdminData();
+  const { users, reports, payments, meetings, analytics, loading } = useAdminData();
   const location = useLocation();
 
-  const totalRevenue = payments
-    .filter(p => p.status === 'paid')
-    .reduce((sum, p) => sum + Number(p.amount), 0);
-
-  const pendingReports = reports.filter(r => r.status === 'pending').length;
-
   const navItems = [
-    { to: '/admin',           label: 'Overview',  icon: LayoutDashboard, exact: true },
-    { to: '/admin/portfolio', label: 'Portfolio', icon: Briefcase },
-    { to: '/admin/reports',   label: 'Reports',   icon: FileText },
-    { to: '/admin/users',     label: 'Users',     icon: Users },
-    { to: '/admin/payments',  label: 'Payments',  icon: CreditCard },
-    { to: '/admin/contacts',  label: 'Inbox',     icon: Inbox },
+    { to: '/admin',            label: 'Overview',  icon: LayoutDashboard, exact: true },
+    { to: '/admin/workflow',   label: 'Workflow',  icon: Kanban },
+    { to: '/admin/portfolio',  label: 'Portfolio', icon: Briefcase },
+    { to: '/admin/reports',    label: 'Reports',   icon: FileText },
+    { to: '/admin/users',      label: 'Users',     icon: Users },
+    { to: '/admin/payments',   label: 'Payments',  icon: CreditCard },
+    { to: '/admin/meetings',   label: 'Meetings',  icon: Calendar },
+    { to: '/admin/contacts',   label: 'Inbox',     icon: Inbox },
   ];
 
   return (
     <div className="min-h-screen bg-[#000000] text-white">
       {/* Admin Top Header */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-black/70 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-[1600px] mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
               <Shield className="w-4 h-4 text-black" />
             </div>
             <div>
-              <span className="font-sans text-xs text-white/40 uppercase tracking-[0.2em]">Management</span>
-              <h2 className="font-sans text-sm font-medium -mt-1">Admin Control</h2>
+              <span className="font-sans text-xs text-white/40 uppercase tracking-[0.2em]">Admin</span>
+              <h2 className="font-sans text-sm font-medium -mt-1">RevLabs Control</h2>
             </div>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
+            {/* Quick stats in header */}
+            {!loading && (
+              <div className="hidden lg:flex items-center gap-4 text-[10px] font-sans uppercase tracking-widest">
+                <span className="text-emerald-400 font-bold">${analytics.totalRevenue.toLocaleString()}</span>
+                <span className="text-white/20">revenue</span>
+                <span className="text-white/60 font-bold">{users.length}</span>
+                <span className="text-white/20">users</span>
+              </div>
+            )}
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
               <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-              <span className="font-sans text-[10px] text-white/60 uppercase tracking-wider">Live System</span>
+              <span className="font-sans text-[10px] text-white/60 uppercase tracking-wider">Live</span>
             </div>
           </div>
         </div>
@@ -53,10 +209,10 @@ export default function AdminPanel() {
 
       <div className="max-w-[1600px] mx-auto px-6 pt-24 pb-20">
         <div className="flex flex-col lg:flex-row gap-12">
-          
+
           {/* Vertical Navigation */}
-          <aside className="lg:w-64 shrink-0">
-            <nav className="sticky top-24 space-y-2">
+          <aside className="lg:w-56 shrink-0">
+            <nav className="sticky top-24 space-y-1">
               {navItems.map(({ to, label, icon: Icon, exact }) => {
                 const active = exact
                   ? location.pathname === to
@@ -65,20 +221,14 @@ export default function AdminPanel() {
                   <Link
                     key={to}
                     to={to}
-                    className={`group flex items-center gap-4 px-4 py-3 rounded-xl font-sans text-sm transition-all duration-300 ${
+                    className={`group flex items-center gap-3 px-4 py-2.5 rounded-xl font-sans text-sm transition-all duration-200 ${
                       active
-                        ? 'bg-white text-black font-semibold shadow-[0_0_20px_rgba(255,255,255,0.1)]'
+                        ? 'bg-white text-black font-semibold'
                         : 'text-white/40 hover:text-white hover:bg-white/5'
                     }`}
                   >
-                    <Icon className={`w-4 h-4 transition-transform duration-300 ${active ? 'scale-110' : 'group-hover:scale-110'}`} />
+                    <Icon className={`w-4 h-4 ${active ? 'text-black' : 'group-hover:text-white/80'}`} />
                     {label}
-                    {active && (
-                      <motion.div 
-                        layoutId="activeNav"
-                        className="ml-auto w-1.5 h-1.5 rounded-full bg-black/20"
-                      />
-                    )}
                   </Link>
                 );
               })}
@@ -88,126 +238,179 @@ export default function AdminPanel() {
           {/* Dynamic Content Area */}
           <main className="flex-1 min-w-0">
             <Routes>
-              {/* Overview Dash */}
+              {/* ── Overview ──────────────────────────────────── */}
               <Route
                 index
                 element={
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20 }} 
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <header className="mb-12">
+                    <header className="mb-10">
                       <h1 className="text-4xl md:text-5xl font-sans font-light tracking-tight mb-2">
                         System <span className="font-serif italic text-white/40">Overview</span>
                       </h1>
-                      <p className="text-white/40 font-sans">Real-time performance and management metrics.</p>
+                      <p className="text-white/30 font-sans text-sm">
+                        Live metrics — updates automatically as data changes.
+                      </p>
                     </header>
 
-                    {/* High-Impact Stats */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-12">
-                      {[
-                        { label: 'Total Users',     value: users.length,    icon: Users,      color: 'from-blue-500/20' },
-                        { label: 'Active Reports',  value: reports.length,  icon: FileText,   color: 'from-purple-500/20' },
-                        { label: 'Pending Task',    value: pendingReports,  icon: Shield,     color: 'from-amber-500/20' },
-                        { label: 'Total Revenue',   value: `$${totalRevenue.toLocaleString('en-US')}`, icon: CreditCard, color: 'from-emerald-500/20' },
-                      ].map(({ label, value, icon: Icon, color }) => (
-                        <div key={label} className={`relative group overflow-hidden bg-white/[0.03] border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-500`}>
-                          <div className={`absolute inset-0 bg-gradient-to-br ${color} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                          <div className="relative flex justify-between items-start mb-4">
-                            <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-                              <Icon className="w-5 h-5 text-white/60" />
-                            </div>
-                            {label === 'Pending Task' && value > 0 && (
-                              <span className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-500 text-[10px] font-sans font-bold uppercase tracking-wider border border-amber-500/20">Action Needed</span>
+                    {/* ── KPI Stat Cards ── */}
+                    <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-10">
+                      <StatCard
+                        label="Total Users"
+                        value={loading ? '—' : users.length.toLocaleString()}
+                        sub={loading ? '' : `${analytics.newUsersThisWeek} new this week`}
+                        trend={analytics.userGrowthPct}
+                        trendLabel="vs last week"
+                        icon={Users}
+                        gradient="from-blue-500/10"
+                        loading={loading}
+                      />
+                      <StatCard
+                        label="Active Projects"
+                        value={loading ? '—' : analytics.activeProjects.toLocaleString()}
+                        sub={loading ? '' : `${analytics.pendingReports} awaiting review`}
+                        icon={Package}
+                        gradient="from-purple-500/10"
+                        loading={loading}
+                      />
+                      <StatCard
+                        label="Monthly Revenue"
+                        value={loading ? '—' : `$${analytics.monthlyRevenue.toLocaleString()}`}
+                        sub={loading ? '' : `$${analytics.weeklyRevenue.toLocaleString()} this week`}
+                        trend={analytics.revenueGrowthPct}
+                        trendLabel="vs last month"
+                        icon={DollarSign}
+                        gradient="from-emerald-500/10"
+                        loading={loading}
+                      />
+                      <StatCard
+                        label="Total Revenue"
+                        value={loading ? '—' : `$${analytics.totalRevenue.toLocaleString()}`}
+                        sub={loading ? '' : `Avg $${analytics.avgOrderValue.toLocaleString()} / order`}
+                        icon={TrendingUp}
+                        gradient="from-amber-500/10"
+                        loading={loading}
+                      />
+                    </div>
+
+                    {/* ── Revenue Chart + Activity Feed ── */}
+                    <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-10">
+                      {/* Revenue Chart */}
+                      <div className="xl:col-span-2 bg-white/[0.02] border border-white/5 rounded-2xl p-8">
+                        <div className="flex justify-between items-center mb-8">
+                          <div>
+                            <h3 className="font-sans text-lg font-medium text-white">
+                              Revenue <span className="font-serif italic text-white/40">Growth</span>
+                            </h3>
+                            <p className="text-white/30 font-sans text-xs mt-1">
+                              Monthly revenue from verified payments
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            {!loading && analytics.revenueGrowthPct !== 0 && (
+                              <div className={`flex items-center gap-1 text-xs font-bold font-sans ${
+                                analytics.revenueGrowthPct >= 0 ? 'text-emerald-400' : 'text-red-400'
+                              }`}>
+                                {analytics.revenueGrowthPct >= 0
+                                  ? <TrendingUp className="w-3.5 h-3.5" />
+                                  : <TrendingDown className="w-3.5 h-3.5" />}
+                                {Math.abs(analytics.revenueGrowthPct)}% MoM
+                              </div>
                             )}
                           </div>
-                          <p className="relative text-white/40 font-sans text-xs uppercase tracking-[0.15em] mb-1">{label}</p>
-                          <p className="relative text-3xl font-sans font-semibold tracking-tight text-white">{value}</p>
                         </div>
+                        <RevenueChart data={analytics.revenueByMonth} loading={loading} />
+                      </div>
+
+                      {/* Activity Feed */}
+                      <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-8">
+                        <h3 className="font-sans text-lg font-medium text-white mb-6">
+                          Live <span className="font-serif italic text-white/40">Activity</span>
+                        </h3>
+                        <ActivityFeed payments={payments} reports={reports} meetings={meetings} />
+                      </div>
+                    </div>
+
+                    {/* ── Status Breakdown ── */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+                      {[
+                        {
+                          label: 'Payments',
+                          items: [
+                            { label: 'Paid',    value: analytics.paidCount,    color: 'text-emerald-400' },
+                            { label: 'Pending', value: analytics.pendingCount, color: 'text-yellow-400' },
+                            { label: 'Failed',  value: analytics.failedCount,  color: 'text-red-400' },
+                          ],
+                          to: '/admin/payments', icon: CreditCard,
+                        },
+                        {
+                          label: 'Projects',
+                          items: [
+                            { label: 'Pending',   value: analytics.reportsByStatus['pending']   || 0, color: 'text-yellow-400' },
+                            { label: 'Active',    value: analytics.reportsByStatus['approved']  || 0, color: 'text-blue-400' },
+                            { label: 'Completed', value: analytics.reportsByStatus['completed'] || 0, color: 'text-emerald-400' },
+                          ],
+                          to: '/admin/reports', icon: FileText,
+                        },
+                        {
+                          label: 'Meetings',
+                          items: [
+                            { label: 'Pending',   value: meetings.filter(m => m.status === 'pending').length,   color: 'text-yellow-400' },
+                            { label: 'Confirmed', value: meetings.filter(m => m.status === 'confirmed').length, color: 'text-blue-400' },
+                            { label: 'Upcoming',  value: analytics.upcomingMeetings,                            color: 'text-purple-400' },
+                          ],
+                          to: '/admin/meetings', icon: Calendar,
+                        },
+                      ].map(({ label, items, to, icon: Icon }) => (
+                        <Link
+                          key={label}
+                          to={to}
+                          className="group bg-white/[0.02] border border-white/5 rounded-2xl p-6 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300"
+                        >
+                          <div className="flex items-center justify-between mb-5">
+                            <div className="flex items-center gap-2">
+                              <Icon className="w-4 h-4 text-white/40" />
+                              <h4 className="text-white/60 font-sans text-sm font-medium">{label}</h4>
+                            </div>
+                            <ArrowUpRight className="w-3.5 h-3.5 text-white/20 group-hover:text-white/60 transition-colors" />
+                          </div>
+                          <div className="space-y-3">
+                            {items.map(it => (
+                              <div key={it.label} className="flex justify-between items-center">
+                                <span className="text-white/40 font-sans text-xs">{it.label}</span>
+                                <span className={`font-sans font-bold text-sm ${it.color}`}>
+                                  {loading ? '—' : it.value}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </Link>
                       ))}
                     </div>
 
-                    {/* Financial Chart Section */}
-                    <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-8 mb-8">
-                      <div className="flex justify-between items-center mb-10">
-                        <div>
-                          <h3 className="font-sans text-xl font-medium text-white">Revenue <span className="font-serif italic text-white/40">Growth</span></h3>
-                          <p className="text-white/30 font-sans text-sm mt-1">Monthly performance based on verified payments.</p>
-                        </div>
-                        <div className="flex items-center gap-4 text-[10px] font-sans uppercase tracking-[0.2em] text-white/30">
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.3)]" />
-                            <span>Revenue</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="h-64 flex items-end gap-3 md:gap-6 px-2">
-                        {/* Generate bars based on last 6 months */}
-                        {(() => {
-                          const months = [];
-                          for (let i = 5; i >= 0; i--) {
-                            const d = new Date();
-                            d.setMonth(d.getMonth() - i);
-                            const monthName = d.toLocaleString('default', { month: 'short' });
-                            const monthKey = `${d.getFullYear()}-${d.getMonth()}`;
-                            
-                            const monthlyRev = payments
-                              .filter(p => {
-                                const pd = new Date(p.created_at);
-                                return p.status === 'paid' && pd.getFullYear() === d.getFullYear() && pd.getMonth() === d.getMonth();
-                              })
-                              .reduce((sum, p) => sum + Number(p.amount), 0);
-                            
-                            months.push({ name: monthName, value: monthlyRev });
-                          }
-
-                          const maxVal = Math.max(...months.map(m => m.value), 1000);
-
-                          return months.map((m, i) => (
-                            <div key={i} className="flex-1 flex flex-col items-center group">
-                              <div className="relative w-full flex flex-col items-center justify-end h-48">
-                                {/* Tooltip */}
-                                <div className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                                  <div className="bg-white text-black text-[10px] font-bold px-2 py-1 rounded shadow-xl">
-                                    $${m.value.toLocaleString()}
-                                  </div>
-                                </div>
-                                {/* Bar */}
-                                <motion.div 
-                                  initial={{ height: 0 }}
-                                  animate={{ height: `${(m.value / maxVal) * 100}%` }}
-                                  transition={{ duration: 1, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                                  className={`w-full max-w-[40px] rounded-t-lg bg-white/10 group-hover:bg-white transition-colors duration-500 relative overflow-hidden ${m.value > 0 ? 'bg-gradient-to-t from-white/5 to-white' : ''}`}
-                                >
-                                  <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity" />
-                                </motion.div>
-                              </div>
-                              <span className="mt-4 font-sans text-[10px] text-white/30 uppercase tracking-widest group-hover:text-white transition-colors">{m.name}</span>
-                            </div>
-                          ));
-                        })()}
-                      </div>
-                    </div>
-
-                    {/* Navigation Shortcut Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* ── Quick Navigation ── */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {[
-                        { to: '/admin/reports',  label: 'Workflow Queue',  desc: 'Review and approve pending project reports.', icon: FileText, accent: 'bg-purple-500' },
-                        { to: '/admin/users',    label: 'User Directory',  desc: 'Manage permissions and user access levels.',  icon: Users,    accent: 'bg-blue-500' },
-                        { to: '/admin/payments', label: 'Financial Audit',  desc: 'Track transaction history and revenue flow.', icon: CreditCard, accent: 'bg-emerald-500' },
+                        { to: '/admin/workflow',  label: 'Project Workflow',  desc: 'Kanban board — drag and drop projects between stages.', icon: Kanban, accent: 'bg-purple-500' },
+                        { to: '/admin/users',     label: 'User Directory',    desc: 'Manage permissions and view client history.',           icon: Users,  accent: 'bg-blue-500' },
+                        { to: '/admin/payments',  label: 'Financial Audit',   desc: 'Full transaction log with filters and breakdowns.',     icon: CreditCard, accent: 'bg-emerald-500' },
+                        { to: '/admin/meetings',  label: 'Meeting Schedule',  desc: 'Confirm and manage client meeting requests.',           icon: Calendar, accent: 'bg-amber-500' },
                       ].map(({ to, label, desc, icon: Icon, accent }) => (
                         <Link
                           key={to}
                           to={to}
-                          className="relative group bg-white/[0.02] border border-white/5 rounded-2xl p-8 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-500"
+                          className="relative group bg-white/[0.02] border border-white/5 rounded-2xl p-6 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300"
                         >
                           <div className={`w-1 h-8 absolute left-0 top-1/2 -translate-y-1/2 rounded-r-full ${accent} opacity-0 group-hover:opacity-100 transition-all duration-500`} />
-                          <div className="mb-6 inline-flex p-4 rounded-2xl bg-white/5 group-hover:bg-white/10 transition-colors">
-                            <Icon className="w-6 h-6 text-white/40 group-hover:text-white transition-colors" />
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="p-2 rounded-xl bg-white/5 group-hover:bg-white/10 transition-colors">
+                              <Icon className="w-5 h-5 text-white/40 group-hover:text-white transition-colors" />
+                            </div>
+                            <h3 className="font-sans text-base font-medium text-white">{label}</h3>
                           </div>
-                          <h3 className="font-sans text-xl font-medium mb-2 text-white group-hover:translate-x-1 transition-transform">{label}</h3>
                           <p className="text-white/30 font-sans text-sm leading-relaxed">{desc}</p>
                         </Link>
                       ))}
@@ -215,11 +418,15 @@ export default function AdminPanel() {
                   </motion.div>
                 }
               />
+
+              {/* ── Sub-routes ─────────────────────────────────── */}
+              <Route path="workflow"  element={<AdminWorkflow />} />
               <Route path="reports"   element={<AdminReports />} />
               <Route path="users"     element={<AdminUsers />} />
               <Route path="payments"  element={<AdminPayments />} />
               <Route path="portfolio" element={<AdminPortfolio />} />
               <Route path="contacts"  element={<AdminContacts />} />
+              <Route path="meetings"  element={<AdminMeetings />} />
             </Routes>
           </main>
         </div>
