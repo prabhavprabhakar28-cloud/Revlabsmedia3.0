@@ -16,7 +16,8 @@ export default function About() {
       <div className="max-w-4xl mx-auto px-6 py-24 min-h-screen">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8 }}
           className="mb-24"
         >
@@ -30,7 +31,8 @@ export default function About() {
 
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <h2 className="text-3xl font-sans font-medium border-b border-white/10 pb-6 mb-12">Our Journey</h2>
