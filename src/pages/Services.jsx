@@ -155,8 +155,7 @@ export default function Services() {
   const webPackages = [
     { title: 'Landing Page', desc: 'High-conversion, performance-driven single page build optimized for strict ROAS.', price: 850, unit: ' minimum', details: [{label: 'Deliverables', value: 'Single page build'}, {label: 'Features', value: 'Responsive design, basic SEO'}, {label: 'What\'s included', value: 'Copy integration, form setup'}, {label: 'Benefits', value: 'Rapid deployment, focused conversion'}] },
     { title: 'Multi-Page Website', desc: 'Comprehensive structure parsing, seamless animations, and integrated CMS backend.', price: 2500, unit: ' starting', details: [{label: 'Deliverables', value: 'Up to 5 pages + CMS integration'}, {label: 'Features', value: 'Advanced animations, custom routing'}, {label: 'What\'s included', value: 'Content management system setup'}, {label: 'Benefits', value: 'Scalable architecture for growing brands'}] },
-    { title: 'Premium Platform', desc: 'Custom robust agency-level build utilizing experimental logic architectures.', price: 5000, unit: ' starting', details: [{label: 'Deliverables', value: 'Full custom web application'}, {label: 'Features', value: 'Complex state, database integration'}, {label: 'What\'s included', value: 'Performance optimization, analytics'}, {label: 'Benefits', value: 'Enterprise-grade performance and design'}] },
-    { title: 'Website Management', desc: 'Continuous maintenance, security audits, and content updates to keep your platform elite.', price: 500, unit: '/ month', details: [{label: 'Deliverables', value: 'Ongoing support & updates'}, {label: 'Features', value: 'Security monitoring, performance tuning'}, {label: 'What\'s included', value: 'Up to 5 hours of edits/mo'}, {label: 'Benefits', value: 'Zero downtime and peak performance'}] }
+    { title: 'Premium Platform', desc: 'Custom robust agency-level build utilizing experimental logic architectures.', price: 5000, unit: ' starting', details: [{label: 'Deliverables', value: 'Full custom web application'}, {label: 'Features', value: 'Complex state, database integration'}, {label: 'What\'s included', value: 'Performance optimization, analytics'}, {label: 'Benefits', value: 'Enterprise-grade performance and design'}] }
   ];
 
   const socialPackages = [
@@ -340,7 +339,7 @@ export default function Services() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className={`grid grid-cols-1 ${activeCategory === 'Web Design' ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3'} gap-8`}
+                className={`grid grid-cols-1 ${activeCategory === 'Web Design' ? 'md:grid-cols-2 lg:grid-cols-3' : 'md:grid-cols-3'} gap-8`}
               >
                 {(activeCategory === 'Photo Editing' ? photoPackages : activeCategory === 'Web Design' ? webPackages : socialPackages).map((pkg, idx) => (
                   <div key={idx} className="group bg-[#050505] border border-white/10 p-10 rounded-[12px] flex flex-col justify-between hover:bg-[#0a0a0a] hover:border-white/30 hover:-translate-y-2 transition-all duration-500 hover:shadow-[0_20px_40px_-15px_rgba(255,255,255,0.05)]">
