@@ -76,37 +76,24 @@ export function useAdminData() {
 
   // ── Real-time Subscriptions ───────────────────────────────────
   useEffect(() => {
-    fetchAll();
     if (!isAdmin) return;
+    fetchAll();
 
-    // Subscribe to ALL admin-relevant tables
-    const channels = [
-      supabase.channel('admin:profiles')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, fetchAll)
-        .subscribe(),
+    // Use a unique channel name for this instance to avoid collisions
+    // if multiple components use this hook or if cleanup overlaps.
+    const channelId = Math.random().toString(36).substring(7);
+    const channel = supabase.channel(`admin_all_changes_${channelId}`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, fetchAll)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'reports' }, fetchAll)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'payments' }, fetchAll)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'portfolio' }, fetchAll)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'meetings' }, fetchAll)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'audit_log' }, fetchAll)
+      .subscribe();
 
-      supabase.channel('admin:reports')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'reports' }, fetchAll)
-        .subscribe(),
-
-      supabase.channel('admin:payments')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'payments' }, fetchAll)
-        .subscribe(),
-
-      supabase.channel('admin:portfolio')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'portfolio' }, fetchAll)
-        .subscribe(),
-
-      supabase.channel('admin:meetings')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'meetings' }, fetchAll)
-        .subscribe(),
-
-      supabase.channel('admin:audit_log')
-        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'audit_log' }, fetchAll)
-        .subscribe(),
-    ];
-
-    return () => channels.forEach(ch => supabase.removeChannel(ch));
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [isAdmin, fetchAll]);
 
   // ── Pre-computed Analytics (memoized, no stale reads) ─────────

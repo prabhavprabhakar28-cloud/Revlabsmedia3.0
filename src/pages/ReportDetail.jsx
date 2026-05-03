@@ -97,7 +97,8 @@ export default function ReportDetail() {
 
   useEffect(() => {
     fetchReport();
-    const ch = supabase.channel(`report:${id}`)
+    const channelId = Math.random().toString(36).substring(7);
+    const ch = supabase.channel(`report:${id}:${channelId}`)
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'reports', filter: `id=eq.${id}` },
         (p) => setReport(p.new))
       .subscribe();

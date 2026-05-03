@@ -172,7 +172,8 @@ export default function Dashboard() {
       setMeetings(data ?? []);
     };
     fetch();
-    const ch = supabase.channel(`dash:meetings:${user.id}`)
+    const channelId = Math.random().toString(36).substring(7);
+    const ch = supabase.channel(`dash:meetings:${user.id}:${channelId}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'meetings', filter: `user_id=eq.${user.id}` }, fetch)
       .subscribe();
     return () => supabase.removeChannel(ch);

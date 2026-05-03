@@ -43,10 +43,12 @@ export default function ProjectInstructions({ reportId }) {
 
   useEffect(() => {
     fetchInstructions();
+    if (!reportId) return;
 
     // Real-time updates
+    const channelId = Math.random().toString(36).substring(7);
     const channel = supabase
-      .channel(`instructions:${reportId}`)
+      .channel(`instructions:${reportId}:${channelId}`)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'project_instructions', filter: `report_id=eq.${reportId}` },

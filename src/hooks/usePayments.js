@@ -26,12 +26,12 @@ export function usePayments() {
   }, [user]);
 
   useEffect(() => {
+    if (!user) return;
     fetchPayments();
 
-    if (!user) return;
-
+    const channelId = Math.random().toString(36).substring(7);
     const channel = supabase
-      .channel(`payments:user:${user.id}`)
+      .channel(`payments:user:${user.id}:${channelId}`)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'payments', filter: `user_id=eq.${user.id}` },

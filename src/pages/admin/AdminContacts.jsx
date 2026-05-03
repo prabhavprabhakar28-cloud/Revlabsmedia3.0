@@ -30,8 +30,9 @@ export default function AdminContacts() {
     };
     fetch();
 
+    const channelId = Math.random().toString(36).substring(7);
     const channel = supabase
-      .channel('admin:contacts')
+      .channel(`admin:contacts:${channelId}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'contact_submissions' }, fetch)
       .subscribe();
     return () => supabase.removeChannel(channel);

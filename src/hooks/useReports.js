@@ -26,13 +26,13 @@ export function useReports() {
   }, [user]);
 
   useEffect(() => {
+    if (!user) return;
     fetchReports();
 
-    if (!user) return;
-
     // Real-time subscription
+    const channelId = Math.random().toString(36).substring(7);
     const channel = supabase
-      .channel(`reports:user:${user.id}`)
+      .channel(`reports:user:${user.id}:${channelId}`)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'reports', filter: `user_id=eq.${user.id}` },
