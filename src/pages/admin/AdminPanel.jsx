@@ -17,10 +17,11 @@ import {
 } from 'lucide-react';
 
 // ── Stat Card ─────────────────────────────────────────────────
-function StatCard({ label, value, sub, trend, trendLabel, icon: Icon, gradient, loading }) {
+function StatCard({ label, value, sub, trend, trendLabel, icon: Icon, gradient, loading, to }) {
   const isPositive = trend >= 0;
-  return (
-    <div className={`relative group overflow-hidden bg-white/[0.03] border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-500`}>
+  
+  const content = (
+    <div className={`relative group overflow-hidden bg-white/[0.03] border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-500 h-full`}>
       <div className={`absolute inset-0 bg-gradient-to-br ${gradient} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
       <div className="relative">
         <div className="flex justify-between items-start mb-5">
@@ -49,6 +50,8 @@ function StatCard({ label, value, sub, trend, trendLabel, icon: Icon, gradient, 
       </div>
     </div>
   );
+
+  return to ? <Link to={to} className="block h-full">{content}</Link> : content;
 }
 
 // ── Revenue Bar Chart ─────────────────────────────────────────
@@ -177,16 +180,16 @@ export default function AdminPanel() {
 
   return (
     <div className="min-h-screen bg-[#000000] text-white">
-      {/* Admin Top Header */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-black/70 backdrop-blur-xl border-b border-white/5">
-        <div className="max-w-[1600px] mx-auto px-6 h-16 flex items-center justify-between">
+      {/* Admin Top Header - Positioned below main Navbar */}
+      <div className="fixed top-20 left-0 right-0 z-40 bg-black/70 backdrop-blur-xl border-b border-y border-white/5 hidden md:block">
+        <div className="max-w-[1600px] mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
-              <Shield className="w-4 h-4 text-black" />
+            <div className="w-6 h-6 rounded bg-white flex items-center justify-center">
+              <Shield className="w-3 h-3 text-black" />
             </div>
             <div>
-              <span className="font-sans text-xs text-white/40 uppercase tracking-[0.2em]">Admin</span>
-              <h2 className="font-sans text-sm font-medium -mt-1">RevLabs Control</h2>
+              <span className="font-sans text-[10px] text-white/40 uppercase tracking-[0.2em]">Admin</span>
+              <h2 className="font-sans text-xs font-medium -mt-1">RevLabs Control</h2>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -207,12 +210,12 @@ export default function AdminPanel() {
         </div>
       </div>
 
-      <div className="max-w-[1600px] mx-auto px-6 pt-24 pb-20">
+      <div className="max-w-[1600px] mx-auto px-6 pt-24 md:pt-40 pb-20 overflow-x-hidden">
         <div className="flex flex-col lg:flex-row gap-12">
 
           {/* Vertical Navigation */}
           <aside className="lg:w-56 shrink-0">
-            <nav className="sticky top-24 space-y-1">
+            <nav className="sticky top-24 md:top-40 space-y-1">
               {navItems.map(({ to, label, icon: Icon, exact }) => {
                 const active = exact
                   ? location.pathname === to
@@ -267,6 +270,7 @@ export default function AdminPanel() {
                         icon={Users}
                         gradient="from-blue-500/10"
                         loading={loading}
+                        to="/admin/users"
                       />
                       <StatCard
                         label="Active Projects"
@@ -275,6 +279,7 @@ export default function AdminPanel() {
                         icon={Package}
                         gradient="from-purple-500/10"
                         loading={loading}
+                        to="/admin/workflow"
                       />
                       <StatCard
                         label="Monthly Revenue"
@@ -285,6 +290,7 @@ export default function AdminPanel() {
                         icon={DollarSign}
                         gradient="from-emerald-500/10"
                         loading={loading}
+                        to="/admin/payments"
                       />
                       <StatCard
                         label="Total Revenue"
@@ -293,6 +299,7 @@ export default function AdminPanel() {
                         icon={TrendingUp}
                         gradient="from-amber-500/10"
                         loading={loading}
+                        to="/admin/payments"
                       />
                     </div>
 

@@ -88,8 +88,18 @@ export default function AdminPortfolio() {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-32">
-          <Loader2 className="w-8 h-8 text-white/10 animate-spin" />
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="bg-white/[0.02] border border-white/5 rounded-2xl overflow-hidden">
+              <div className="aspect-video bg-white/5 animate-pulse" />
+              <div className="p-6 space-y-3">
+                <div className="h-3 bg-white/10 rounded w-1/3 animate-pulse" />
+                <div className="h-5 bg-white/10 rounded w-3/4 animate-pulse" />
+                <div className="h-4 bg-white/5 rounded w-full animate-pulse mt-4" />
+                <div className="h-4 bg-white/5 rounded w-2/3 animate-pulse" />
+              </div>
+            </div>
+          ))}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">

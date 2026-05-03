@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAdminData } from '../../hooks/useAdminData';
 import { CreditCard, Loader2, TrendingUp, DollarSign, Clock, X, ChevronDown } from 'lucide-react';
+import { toast } from 'sonner';
 
 const STATUS_STYLES = {
   pending:  'bg-yellow-500/10 border-yellow-500/20 text-yellow-400',
@@ -10,7 +11,7 @@ const STATUS_STYLES = {
   refunded: 'bg-blue-500/10   border-blue-500/20   text-blue-400',
 };
 
-function PaymentDetailModal({ payment, onClose }) {
+function PaymentDetailModal({ payment, onClose, onMarkAsPaid }) {
   if (!payment) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
@@ -48,19 +49,29 @@ function PaymentDetailModal({ payment, onClose }) {
           ))}
         </div>
 
-        <button
-          onClick={onClose}
-          className="w-full mt-6 py-3 border border-white/10 text-white/50 rounded-xl font-sans text-sm hover:bg-white/5 transition-colors"
-        >
-          Close
-        </button>
+        <div className="flex gap-4 mt-8">
+          <button
+            onClick={onClose}
+            className="flex-1 py-3 border border-white/10 text-white/50 rounded-xl font-sans text-sm hover:bg-white/5 transition-colors"
+          >
+            Close
+          </button>
+          {payment.status !== 'paid' && onMarkAsPaid && (
+            <button
+              onClick={() => onMarkAsPaid(payment.id)}
+              className="flex-1 py-3 bg-emerald-500 hover:bg-emerald-400 text-black rounded-xl font-sans text-sm font-bold transition-colors"
+            >
+              Force Mark as Paid
+            </button>
+          )}
+        </div>
       </motion.div>
     </div>
   );
 }
 
 export default function AdminPayments() {
-  const { payments, analytics, loading } = useAdminData();
+  const { payments, analytics, loading, updatePaymentStatus } = useAdminData();
   const [filter, setFilter]   = useState('all');
   const [search, setSearch]   = useState('');
   const [selected, setSelected] = useState(null);
@@ -75,6 +86,16 @@ export default function AdminPayments() {
       || p.profiles?.email?.toLowerCase().includes(q);
     return matchesFilter && matchesSearch;
   });
+
+  const handleMarkAsPaid = async (paymentId) => {
+    try {
+      await updatePaymentStatus(paymentId, 'paid');
+      toast.success('Payment successfully marked as paid.');
+      setSelected(prev => prev?.id === paymentId ? { ...prev, status: 'paid' } : prev);
+    } catch (err) {
+      toast.error(`Failed to mark as paid: ${err.message}`);
+    }
+  };
 
   // CSV Export
   const exportCSV = () => {
@@ -171,8 +192,25 @@ export default function AdminPayments() {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-32">
-          <Loader2 className="w-8 h-8 text-white/10 animate-spin" />
+        <div className="bg-white/[0.02] border border-white/5 rounded-2xl overflow-hidden">
+          <div className="p-6 border-b border-white/5 flex gap-4">
+            <div className="h-4 bg-white/10 rounded w-1/4 animate-pulse" />
+            <div className="h-4 bg-white/10 rounded w-1/4 animate-pulse" />
+            <div className="h-4 bg-white/10 rounded w-1/4 animate-pulse" />
+            <div className="h-4 bg-white/10 rounded w-1/4 animate-pulse" />
+          </div>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="p-6 border-b border-white/5 flex gap-4 items-center">
+              <div className="w-9 h-9 rounded-lg bg-white/10 animate-pulse shrink-0" />
+              <div className="space-y-2 flex-1">
+                <div className="h-3 bg-white/10 rounded w-1/2 animate-pulse" />
+                <div className="h-2 bg-white/5 rounded w-1/3 animate-pulse" />
+              </div>
+              <div className="h-6 bg-white/10 rounded-full w-20 animate-pulse" />
+              <div className="h-3 bg-white/10 rounded w-24 animate-pulse" />
+              <div className="h-8 bg-white/10 rounded-lg w-28 animate-pulse" />
+            </div>
+          ))}
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-32 bg-white/[0.01] border border-dashed border-white/10 rounded-2xl">
@@ -251,7 +289,11 @@ export default function AdminPayments() {
 
       <AnimatePresence>
         {selected && (
-          <PaymentDetailModal payment={selected} onClose={() => setSelected(null)} />
+          <PaymentDetailModal
+            payment={selected}
+            onClose={() => setSelected(null)}
+            onMarkAsPaid={handleMarkAsPaid}
+          />
         )}
       </AnimatePresence>
     </motion.div>

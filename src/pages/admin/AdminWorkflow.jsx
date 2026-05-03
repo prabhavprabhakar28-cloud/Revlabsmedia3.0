@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAdminData } from '../../hooks/useAdminData';
 import { Loader2, ChevronRight, CreditCard, Calendar, User } from 'lucide-react';
+import { toast } from 'sonner';
 
 // ── Workflow stages in order ──────────────────────────────────
 const STAGES = [
@@ -146,6 +147,9 @@ export default function AdminWorkflow() {
     if (currentStage === targetStage) return;
 
     setUpdating(true);
+    // Determine friendly name for the toast
+    const targetLabel = STAGES.find(s => s.id === targetStage)?.label || targetStage;
+    
     try {
       // Map workflow_stage to compatible status for DB
       const statusMap = {
@@ -159,8 +163,10 @@ export default function AdminWorkflow() {
         cancelled:          'rejected',
       };
       await updateReportStatus(reportId, statusMap[targetStage] || targetStage, targetStage);
+      toast.success(`Moved to ${targetLabel}`);
     } catch (err) {
       console.error('Failed to update stage:', err.message);
+      toast.error(`Failed to move: ${err.message}`);
     } finally {
       setUpdating(false);
     }

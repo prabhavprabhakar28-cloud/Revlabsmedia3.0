@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useAdminData } from '../../hooks/useAdminData';
 import { FileText, Loader2, ChevronDown } from 'lucide-react';
 import { sendEmail } from '../../lib/email';
+import { toast } from 'sonner';
 
 const STATUSES = ['pending', 'approved', 'rejected', 'completed'];
 
@@ -30,6 +31,8 @@ export default function AdminReports() {
     setUpdating(id);
     try {
       await updateReportStatus(id, newStatus);
+      toast.success(`Status updated to ${newStatus}`);
+      
       // Fire status-change email for meaningful transitions
       if (['approved', 'completed', 'rejected'].includes(newStatus) && report?.profiles?.email) {
         await sendEmail({
@@ -41,6 +44,7 @@ export default function AdminReports() {
       }
     } catch (err) {
       console.error('Failed to update status:', err.message);
+      toast.error(`Failed to update status: ${err.message}`);
     } finally {
       setUpdating(null);
     }
@@ -91,8 +95,25 @@ export default function AdminReports() {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-32">
-          <Loader2 className="w-8 h-8 text-white/10 animate-spin" />
+        <div className="bg-white/[0.02] border border-white/5 rounded-2xl overflow-hidden">
+          <div className="p-6 border-b border-white/5 flex gap-4">
+            <div className="h-4 bg-white/10 rounded w-1/4 animate-pulse" />
+            <div className="h-4 bg-white/10 rounded w-1/4 animate-pulse" />
+            <div className="h-4 bg-white/10 rounded w-1/4 animate-pulse" />
+            <div className="h-4 bg-white/10 rounded w-1/4 animate-pulse" />
+          </div>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="p-6 border-b border-white/5 flex gap-4 items-center">
+              <div className="w-9 h-9 rounded-lg bg-white/10 animate-pulse shrink-0" />
+              <div className="space-y-2 flex-1">
+                <div className="h-3 bg-white/10 rounded w-1/2 animate-pulse" />
+                <div className="h-2 bg-white/5 rounded w-1/3 animate-pulse" />
+              </div>
+              <div className="h-6 bg-white/10 rounded-full w-20 animate-pulse" />
+              <div className="h-3 bg-white/10 rounded w-24 animate-pulse" />
+              <div className="h-8 bg-white/10 rounded-lg w-28 animate-pulse" />
+            </div>
+          ))}
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-32 bg-white/[0.01] border border-dashed border-white/10 rounded-2xl">

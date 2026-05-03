@@ -211,11 +211,19 @@ export function useAdminData() {
     if (status)        update.status         = status;
     if (workflowStage) update.workflow_stage = workflowStage;
 
+    // Optimistic UI update
+    setReports(prev => prev.map(r => r.id === reportId ? { ...r, ...update } : r));
+
     const { error } = await supabase
       .from('reports')
       .update(update)
       .eq('id', reportId);
-    if (error) throw error;
+      
+    if (error) {
+      // Revert optimistic update on error by refetching
+      fetchAll();
+      throw error;
+    }
   };
 
   const updateReportAssignment = async (reportId, updates) => {
@@ -242,6 +250,20 @@ export function useAdminData() {
       .update(updates)
       .eq('id', meetingId);
     if (error) throw error;
+  };
+
+  const updatePaymentStatus = async (paymentId, status) => {
+    // Optimistic update
+    setPayments(prev => prev.map(p => p.id === paymentId ? { ...p, status } : p));
+    const { error } = await supabase
+      .from('payments')
+      .update({ status })
+      .eq('id', paymentId);
+    
+    if (error) {
+      fetchAll();
+      throw error;
+    }
   };
 
   // ── Portfolio CRUD ──────────────────────────────────────────
@@ -285,6 +307,7 @@ export function useAdminData() {
     updateReportAssignment,
     updateUserRole,
     updateMeetingStatus,
+    updatePaymentStatus,
     addProject,
     updateProject,
     deleteProject,
